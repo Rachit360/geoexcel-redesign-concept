@@ -9,15 +9,15 @@ const withBase = (path) => `${base.replace(/\/$/, '')}${path}`;
 
 // Old Wix URLs from geoexcel.group, mapped to their new homes.
 const legacy = {
-  '/about': '/group/',
-  '/about-1': '/group/#commitments',
+  '/about': '/#about',
+  '/about-1': '/#sustainability',
   '/projects': '/products/',
-  '/general-9': '/products/rice/',
-  '/copy-of-rice': '/products/spices/',
-  '/copy-of-whole-spices': '/products/frozen-foods/',
-  '/copy-of-whole-spices-1': '/products/edible-oils-ghee/',
-  '/fashion-lifestyle': '/products/leather-footwear/',
-  '/certificates': '/quality/',
+  '/general-9': '/products/?category=rice',
+  '/copy-of-rice': '/products/?category=spices',
+  '/copy-of-whole-spices': '/products/?category=frozen-foods',
+  '/copy-of-whole-spices-1': '/products/?category=edible-oils-ghee',
+  '/fashion-lifestyle': '/products/',
+  '/certificates': '/#certifications',
 };
 
 export default defineConfig({

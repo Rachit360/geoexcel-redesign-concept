@@ -1,0 +1,106 @@
+---
+import { Picture } from 'astro:assets';
+import ShippingMark from '../ShippingMark.astro';
+import { photo } from '../../lib/images';
+import { url } from '../../lib/paths';
+import { registrations } from '../../data/registrations';
+
+const iec = registrations.find((r) => r.id === 'iec')!;
+---
+
+<section class="hero on-dark" aria-labelledby="hero-title">
+  <Picture
+    class="hero__img"
+    src={photo('band-spice-bowls')}
+    formats={['avif', 'webp']}
+    widths={[640, 1024, 1600, 2400]}
+    sizes="100vw"
+    alt="Bowls of whole and ground Indian spices, seen from above"
+    loading="eager"
+    fetchpriority="high"
+  />
+  <div class="hero__inner">
+    <p class="eyebrow">Geo Excel · Geographic Excellence</p>
+    <h1 id="hero-title">From India’s growing regions <span class="hl">to your port.</span></h1>
+    <p class="lead">
+      A Bengaluru merchant exporter of rice, whole spices, frozen foods, edible oils and ghee — from a family that has
+      farmed and traded since the 1980s.
+    </p>
+    <div class="btn-row">
+      <a class="btn" href={url('/products/')}>Explore products <span class="btn__arrow" aria-hidden="true">→</span></a>
+      <a class="btn btn--ghost" href={url('/#process')}>How to trade with us</a>
+    </div>
+  </div>
+  <ShippingMark
+    class="hero__mark"
+    origin="Product of India"
+    name="Geo Excel"
+    lines={['Bengaluru · Karnataka', `IEC ${iec.number}`]}
+  />
+</section>
+
+<style>
+  .hero {
+    position: relative;
+    display: grid;
+    align-items: end;
+    min-height: min(52rem, calc(100svh - var(--header-h) - 3rem));
+    margin: var(--s-3);
+    overflow: hidden;
+    border-radius: var(--r-panel);
+    background: var(--forest);
+    color: var(--cream);
+  }
+
+  .hero :global(.hero__img) {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  /* Legibility scrim: darkens the side of the photo behind the text. */
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background: linear-gradient(90deg, rgba(17, 42, 32, 0.92) 0%, rgba(17, 42, 32, 0.7) 45%, rgba(17, 42, 32, 0.15) 100%);
+  }
+
+  .hero__inner {
+    position: relative;
+    z-index: 2;
+    display: grid;
+    gap: var(--s-5);
+    max-width: 50rem;
+    padding: clamp(2rem, 1rem + 5vw, 5rem);
+  }
+
+  .hero h1 {
+    color: var(--cream);
+  }
+
+  .hero .lead {
+    max-width: 34rem;
+    color: #d9dfd1;
+  }
+
+  .hero :global(.hero__mark) {
+    position: absolute;
+    right: clamp(1.5rem, 4vw, 4rem);
+    bottom: clamp(1.5rem, 4vw, 4rem);
+    z-index: 2;
+    width: 16rem;
+  }
+
+  @media (max-width: 899px) {
+    .hero::before {
+      background: linear-gradient(0deg, rgba(17, 42, 32, 0.95) 30%, rgba(17, 42, 32, 0.55) 100%);
+    }
+    .hero :global(.hero__mark) {
+      display: none;
+    }
+  }
+</style>

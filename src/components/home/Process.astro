@@ -1,0 +1,146 @@
+---
+import { enquiryHref } from '../../lib/enquiry';
+import { company } from '../../data/company';
+
+const steps = [
+  {
+    title: 'Share your requirement',
+    text: 'Email or call with the product, grade, quantity, packing and destination port.',
+  },
+  {
+    title: 'Receive a quotation',
+    text: 'Geo Excel confirms the specification, packing, terms and price it can offer.',
+  },
+  {
+    title: 'Confirm the order',
+    text: 'Specification, Incoterm, payment terms and documents are agreed in the contract.',
+  },
+  {
+    title: 'Packing and dispatch',
+    text: 'Goods are packed to the agreed specification and dispatched against the contract.',
+  },
+];
+---
+
+<section class="process" id="process" aria-labelledby="process-title">
+  <div class="wrap">
+    <div class="intro intro--center">
+      <p class="eyebrow">How to trade with us</p>
+      <h2 id="process-title">From first message <span class="hl">to dispatch.</span></h2>
+      <p class="lead">Four steps, no account or sign-up — just tell us what you need.</p>
+    </div>
+
+    <ol class="steps" role="list">
+      {
+        steps.map((s, i) => (
+          <li data-reveal>
+            <span class="steps__num">Step {i + 1}</span>
+            <h3>{s.title}</h3>
+            <p>{s.text}</p>
+          </li>
+        ))
+      }
+    </ol>
+
+    <div class="process__cta">
+      <a class="btn" href={enquiryHref()}>Start with step 1 <span class="btn__arrow" aria-hidden="true">→</span></a>
+      <p>or call <a class="link" href={company.phone.href}>{company.phone.display}</a></p>
+    </div>
+  </div>
+</section>
+
+<style>
+  .process {
+    margin: 0 var(--s-3);
+    padding-block: var(--section);
+    border-radius: var(--r-panel);
+    background: var(--sage);
+  }
+
+  .process .eyebrow {
+    color: var(--green);
+  }
+
+  .steps {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: var(--s-3);
+    counter-reset: step;
+  }
+
+  .steps li {
+    position: relative;
+    display: grid;
+    align-content: start;
+    gap: var(--s-3);
+    padding: var(--s-5);
+    border-radius: var(--r-card);
+    background: var(--cream-2);
+  }
+
+  /* Arrow connecting each step to the next */
+  .steps li:not(:last-child)::after {
+    content: '→';
+    position: absolute;
+    right: calc(var(--s-3) * -1 - 0.75rem);
+    top: 50%;
+    z-index: 1;
+    display: grid;
+    place-items: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    margin-top: -1.125rem;
+    border-radius: 50%;
+    background: var(--forest);
+    color: var(--cream);
+    font-size: 0.875rem;
+  }
+
+  .steps__num {
+    justify-self: start;
+    padding: 0.3rem 0.75rem;
+    border-radius: var(--r-pill);
+    background: var(--forest);
+    color: var(--cream);
+    font-size: 0.75rem;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .steps h3 {
+    font-size: 1.75rem;
+  }
+
+  .steps p {
+    font-size: 0.9375rem;
+    color: var(--muted);
+  }
+
+  .process__cta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: var(--s-4);
+    margin-top: var(--s-7);
+    color: var(--forest);
+    font-weight: 600;
+  }
+
+  @media (max-width: 1023px) {
+    .steps {
+      grid-template-columns: 1fr 1fr;
+    }
+    .steps li:not(:last-child)::after {
+      display: none;
+    }
+  }
+
+  @media (max-width: 539px) {
+    .steps {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

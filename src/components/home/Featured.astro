@@ -1,0 +1,73 @@
+---
+import ProductCard from '../ProductCard.astro';
+import { allProducts, productCount } from '../../data/catalogue';
+import { url } from '../../lib/paths';
+
+// One product from each category.
+const picks = ['rice/1121-basmati-steam', 'spices/green-cardamom', 'frozen-foods/french-fries', 'edible-oils-ghee/a2-ghee'];
+const featured = picks.map((id) => allProducts.find((p) => `${p.category.slug}/${p.slug}` === id)!);
+---
+
+<section class="section featured" aria-labelledby="featured-title">
+  <div class="wrap">
+    <div class="featured__head">
+      <div class="intro">
+        <p class="eyebrow">Featured products</p>
+        <h2 id="featured-title">A taste of <span class="hl">the range.</span></h2>
+      </div>
+      <a class="btn btn--dark" href={url('/products/')}>View all {productCount} products <span class="btn__arrow" aria-hidden="true">→</span></a>
+    </div>
+    <ul class="featured__grid" role="list">
+      {
+        featured.map((p) => (
+          <li data-reveal>
+            <ProductCard product={p} category={p.category} />
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>
+
+<style>
+  .featured {
+    background: var(--cream-2);
+    margin: 0 var(--s-3);
+    border-radius: var(--r-panel);
+  }
+
+  .featured__head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: end;
+    justify-content: space-between;
+    gap: var(--s-5);
+    margin-bottom: var(--s-7);
+  }
+
+  .featured__head .intro {
+    margin-bottom: 0;
+  }
+
+  .featured__grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: var(--s-3);
+  }
+
+  .featured :global(.pcard) {
+    background: var(--cream);
+  }
+
+  @media (max-width: 1023px) {
+    .featured__grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  @media (max-width: 539px) {
+    .featured__grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

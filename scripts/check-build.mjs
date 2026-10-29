@@ -1,7 +1,7 @@
 // Post-build checks. Fails the build if:
 //  - any page contains placeholder or unconfirmed wording,
 //  - any internal link or asset points to a file that was not generated,
-//  - an expired registration is published as current.
+//  - an expired registration is listed on the homepage.
 import { readFileSync, readdirSync, statSync, existsSync } from 'node:fs';
 import { join, relative } from 'node:path';
 
@@ -41,10 +41,10 @@ for (const file of pages) {
   }
 }
 
-// Registrations: nothing past its validity date may be marked "Current".
-const quality = readFileSync(join(dist, 'quality', 'index.html'), 'utf8');
-for (const [, until] of quality.matchAll(/data-label="Valid until"[^>]*>\s*(\d{2} \w{3} \d{4})/g)) {
-  if (new Date(until) < new Date()) problems.push(`quality: a registration valid until ${until} is listed`);
+// Registrations: nothing past its validity date may be shown as current.
+const home = readFileSync(join(dist, 'index.html'), 'utf8');
+for (const [, until] of home.matchAll(/Valid until<\/dt>\s*<dd[^>]*>(\d{2} \w{3} \d{4})/g)) {
+  if (new Date(until) < new Date()) problems.push(`home: a registration valid until ${until} is listed`);
 }
 
 if (problems.length) {

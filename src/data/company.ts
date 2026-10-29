@@ -67,11 +67,25 @@ export const heritage = [
 /** Verticals named by the company. Only trading is described in detail on its site. */
 export const verticals = ['Agriculture', 'Automotive', 'Construction', 'Trading'] as const;
 
-/** Commitments listed on geoexcel.group/about-1 ("Sustainability"), in the company's words, lightly edited. */
-export const commitments = [
-  'Uplifting livelihoods and ensuring good working conditions.',
-  'Working towards living wages for all stakeholders.',
-  'Building an environmentally sustainable business.',
-  'Sourcing natural raw materials using proper harvesting methods, at the right time and for the right price.',
-  'Supporting the preservation of endangered plant species and avoiding their use.',
-] as const;
+/**
+ * Sustainability, as published on geoexcel.group/about-1 and the 2019 entry
+ * of the company timeline. Wording is lightly edited for grammar only.
+ */
+export const sdg = {
+  since: '2019',
+  statement:
+    'Since 2019 the Group has focused on the United Nations’ 17 Sustainable Development Goals, with a passion-driven approach to CSR.',
+  approach: [
+    'Uplifting livelihoods and ensuring good working conditions',
+    'Living wages for all stakeholders',
+    'Action on climate change',
+    'Building an environmentally sustainable business',
+  ],
+  principles: [
+    'Sustainable agricultural methods for collecting natural raw materials.',
+    'Proper harvesting methods — sourced at the right time, for the right price.',
+    'Supporting the preservation of endangered plant species, and avoiding their use.',
+    'Practising organic farming and avoiding pesticides and chemicals.',
+    'Avoiding raw materials that may affect the climate.',
+  ],
+} as const;

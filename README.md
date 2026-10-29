@@ -1,92 +1,96 @@
 # Geo Excel — concept redesign
 
-A redesign of [geoexcel.group](https://www.geoexcel.group/), the website of a Bengaluru merchant exporter of rice, whole spices, IQF frozen foods, edible oils and ghee.
+A focused redesign of [geoexcel.group](https://www.geoexcel.group/), built for a hiring assignment. It has two pages: a **homepage** and a **products page**.
 
-> This is a concept built as a design and development exercise. It is **not** the official Geo Excel website. Every page says so, and the site is marked `noindex`.
+> This is a concept. It is **not** the official Geo Excel website: every page says so, and the site is marked `noindex`.
 
 ## The problem
 
-**International buyers could not qualify Geo Excel, or ask for a precise quote.**
+**A first-time international buyer could not quickly understand who Geo Excel is, why to trust it, or how to start trading with it.**
 
-An audit of the current site found:
-
-- The homepage headline (“Facilitating International & Domestic Trade — for your business”) did not say what the company sells, or to whom.
-- About 44 products were documented on four long, duplicated template pages (the spice page lived at `/copy-of-rice`), with no way to compare grades.
-- Specifications contradicted themselves. For example, 1121 Sella moisture was given as both 14% and 13.5% max. HS codes were labelled “HNS Code” and were inconsistent.
-- The only enquiry route was a four-field form (name, email, message). It captured no product, quantity, packing, port or Incoterm, so every enquiry needed clarifying emails before anyone could quote.
-- The legal entity, IEC and APEDA registration appeared only inside certificate images. Two of the documents shown were already past their validity dates.
+The current site's headline ("Facilitating International & Domestic Trade") does not say what the company sells. Products sit on long duplicated pages. The registrations are hidden in image sliders. The only enquiry route is a four-field form with no guidance on what to send.
 
 ## The response
 
-The redesign makes the specification the starting point of every enquiry.
+The homepage answers a first-time visitor's questions in order:
 
-- **Specification-first catalogue:** 44 product sheets in the same order (origin → key parameters → pack sizes → HS code), with a searchable index and comparison tables for each category.
-- **Quote list and structured enquiry:** buyers add products as they browse (stored in `localStorage`), then send quantity, unit and packing for each line, plus destination, Incoterm and timing, as one reviewed message.
-- **Quality register:** registration numbers, issuers and dates, with status calculated from the validity date at build time.
-- **Group story in proportion:** the history from farming to trading supports credibility without crowding out the products.
-- **Legacy redirects:** every old Wix URL redirects to its new page.
+| Question | Section |
+|---|---|
+| What is this company? | Hero, the at-a-glance figures, and **About** (Geographic Excellence, farming roots since the 1980s, the Group's timeline and verticals) |
+| What do they sell, and from where? | **Geographic Excellence**: products grouped by their Indian region of origin. **Categories**: rice, spices, frozen foods, oils and ghee. **Featured products** |
+| Why choose them? | **Why Geo Excel**: six reasons, each backed by published information |
+| How do I buy? | **How to trade**: four steps from first message to dispatch |
+| Can I trust them? | **Registrations**: APEDA, IEC and Udyam, with certificate images, numbers and dates. **Sustainability**: their UN SDG commitments and sourcing principles |
+| How do I get in touch? | **Contact**: an email enquiry template, phone and address |
 
-The full reasoning is on the site at [`/about-this-redesign/`](src/pages/about-this-redesign.astro).
+The **products page** shows all 44 products with an image, a short description and their origin. A category filter uses the four category tiles. Every product has an **Enquire** link that opens the visitor's email app with a pre-filled enquiry template.
 
-## Accuracy rules
+## Content rules
 
-No company material was supplied, so the only sources are Geo Excel's public website and the certificate images it publishes.
+- Only facts Geo Excel publishes on its website or in its certificates are used.
+- The heritage is shown as **"since the 1980s"**, which is how the company states it. A specific number of years (e.g. "46 years") would assume a founding year of 1980, which the site does not state.
+- Registrations whose published copies have expired (FSSAI, Council for Leather Exports) are not shown. Status is calculated from each document's validity date at build time (`src/data/registrations.ts`).
+- Photographs come from the current geoexcel.group site and are captioned only with what they show.
+- `npm run build` fails if placeholder wording, a broken internal link, or an expired registration reaches the output (`scripts/check-build.mjs`).
 
-- No customers, volumes, facilities, markets or statistics are invented.
-- If a parameter appears with two different values on the source site, it is **omitted**, not guessed. Obvious errors (for example a nutmeg shelf life of “14 Yr”) are omitted too.
-- HS codes are shown only at the internationally harmonised 4- or 6-digit level.
-- Registrations whose published copy has expired (FSSAI and CLE) are kept out of the public register. See `src/data/registrations.ts`.
-- All photographs come from geoexcel.group. Captions describe only the product type and never suggest a Geo Excel facility.
-- `npm run build` fails if placeholder wording (TBC, TODO, lorem ipsum…) reaches the output, if any internal link or asset is broken, or if an expired registration is listed (`scripts/check-build.mjs`).
+## Design
 
-## Design: “Shipping Mark”
+- **Reference:** colour and type direction from [careloop.framer.website](https://careloop.framer.website/).
+- **Palette:** forest green `#112a20`, cream `#eaebdb`, orange `#ef562c` (with `#b23a18` for text and buttons, to meet AA contrast) and a yellow highlight `#fddb22`. The four stroke colours of the Geo Excel logo mark the four categories.
+- **Type:** Bayon (condensed display, all caps) for headings and Manrope for text. Big Shoulders Stencil is used once, for the "shipping mark" export label in the hero.
+- **Shape:** rounded panels and cards with pill-shaped buttons.
+- **Motion:** a single fade-in on scroll, switched off when the visitor prefers reduced motion.
 
-The visual language is taken from the physical world of the export trade rather than from other websites: the stencilled marks sprayed on jute and PP sacks, hessian texture, and the red of an inspection stamp.
-
-- **Palette:** jute (`#d6c39b`), unbleached bone (`#f2ede3`), stencil ink (`#16202a`, a deepened version of the Geo Excel navy) and stamp red (`#b3302a`). The logo's four stroke colours code the categories: 01 Rice green, 02 Spices orange, 03 Frozen teal, 04 Oils red.
-- **Type:** Big Shoulders Stencil Display for display headings (the voice of a sack mark), Big Shoulders Display for figures and labels, and Instrument Sans for reading text. All are self-hosted.
-- **Signature element:** the *shipping mark*, a bordered stencil label with a hard offset shadow. It carries only real product data (name, origin, pack sizes, HS code) and appears in the hero and on every product page.
-- **Composition:** a poster-scale hero, a colour-banded category board, specifications set as oversized figures, a worked example of the enquiry document, registration status shown as inspection stamps, and a stamp-red call to action.
-- **Design process:** the UX and UI designer skills in `.claude/skills/`, which cover material derivation, the banned AI-look checklist and the brand-swap test.
-
-## Stack
-
-- [Astro 5](https://astro.build) static site with TypeScript and no UI framework.
-- `astro:assets` serves responsive AVIF/WebP images.
-- No tracking, cookies or third-party scripts.
+## Code structure
 
 ```
 src/
-  data/        company.ts, catalogue.ts, registrations.ts  ← all content lives here
-  components/  Header, Footer, SpecSheet, ProductTable, Register, CategoryIndex, …
-  pages/       index, products/[category]/[product], enquiry, quality, group, …
-  scripts/     site.ts (navigation, quote list, reveals), quote-store.ts
-  styles/      global.css (design tokens)
-scripts/
-  check-build.mjs      post-build accuracy and link checks
-  prepare-images.py    trims and resizes the source photographs
+  data/
+    catalogue.ts       44 products, 4 categories, regions-of-origin helper
+    company.ts         address, contact, history, SDG commitments
+    registrations.ts   registrations + status-from-expiry-date
+  components/
+    Header.astro       nav + concept notice + mobile menu
+    Footer.astro
+    Logo.astro         Geo Excel mark redrawn as SVG
+    ProductCard.astro  shared by homepage and products page
+    ShippingMark.astro the stencilled export label
+    home/              one file per homepage section, in page order
+  lib/
+    enquiry.ts         builds the mailto: enquiry link
+    images.ts, paths.ts
+  pages/
+    index.astro        homepage: just the sections, in order
+    products/index.astro  products grid + category filter (small inline script)
+    404.astro
+  scripts/site.ts      mobile menu and reveal-on-scroll
+  styles/global.css    design tokens and shared styles
 ```
+
+**Stack:** [Astro 5](https://astro.build), a static site with no UI framework. Images are generated as responsive AVIF/WebP with `astro:assets`, and fonts are self-hosted. There is no backend, database or tracking. Enquiries are `mailto:` links, so nothing is stored.
 
 ## Run locally
 
 ```bash
 npm install
 npm run dev        # http://localhost:4321
-npm run build      # static output in dist/, followed by the build checks
-npm run preview
+```
+
+```bash
+npm run build      # static site in dist/, then the build checks
+npm run preview    # serve the built site
 ```
 
 ## Deploy
 
-The site is static, so any static host works.
+- **Vercel:** import the repository. It needs no configuration, and `vercel.json` redirects the old Wix URLs (e.g. `/general-9` → `/products/?category=rice`).
+- **GitHub Pages:** set *Settings → Pages → Source* to "GitHub Actions" and push to `main` (`.github/workflows/deploy-pages.yml`).
+- **Any static host:** upload `dist/`.
 
-- **Vercel:** import the repository. The framework is detected automatically, and `vercel.json` adds permanent redirects for the old URLs. No environment variables are needed.
-- **GitHub Pages:** in *Settings → Pages*, set **Source** to **GitHub Actions**, then push to `main` (or run the workflow manually). `.github/workflows/deploy-pages.yml` sets `SITE_URL` and `BASE_PATH` so every link works under `/<repo>/`.
+## Design skills
 
-## Accessibility
-
-Checked with axe-core (WCAG 2.2 AA plus best-practice rules) on every page type at 1440px and 390px, with no violations. The site has keyboard-operable menus (a disclosure panel on desktop and a modal drawer with focus containment on mobile), semantic tables restyled for small screens, a form error summary with linked field errors, visible focus, and 44px touch targets.
+`.claude/skills/ui-designer` and `.claude/skills/ux-designer` are the "Claude UX & UI Design Skills" (Yummy Design, v3). They were used to guide the design work.
 
 ## Credits
 
-Concept design and development: Rachit Trivedi. Product information, logo and photographs © their respective owners, reproduced from geoexcel.group for the purpose of this redesign proposal.
+Concept design and development: Rachit Trivedi. Product information, logo, certificates and photographs © Geo Excel, reproduced from geoexcel.group for this proposal.

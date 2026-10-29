@@ -1,0 +1,134 @@
+---
+import { productCount, regions } from '../../data/catalogue';
+
+// Each reason is backed by something Geo Excel has published.
+const reasons = [
+  {
+    title: 'Rooted in agriculture',
+    text: 'The family behind Geo Excel has grown rice, sugarcane and sesame since the 1980s — trade built on knowing the crop.',
+  },
+  {
+    title: 'Registered exporter',
+    text: 'APEDA RCMC, Importer-Exporter Code and Udyam registration, each with a number you can check.',
+  },
+  {
+    title: 'One supplier, four categories',
+    text: `${productCount} products across rice, spices, frozen foods and edible oils — consolidate sourcing with one partner.`,
+  },
+  {
+    title: 'Origin you can name',
+    text: `Products list their region of origin, across ${regions.length} Indian states from Punjab to Kerala.`,
+  },
+  {
+    title: 'Clear product information',
+    text: 'Grades, pack sizes and packing types are published for each product, so enquiries start from facts.',
+  },
+  {
+    title: 'Committed to the SDGs',
+    text: 'A stated focus since 2019 on the UN Sustainable Development Goals, fair wages and sustainable sourcing.',
+  },
+];
+---
+
+<section class="section wrap" aria-labelledby="why-title">
+  <div class="why">
+    <div class="intro why__intro">
+      <p class="eyebrow">Why Geo Excel</p>
+      <h2 id="why-title">Reasons buyers <span class="hl">start here.</span></h2>
+      <p class="lead">
+        A young export company with an old relationship to the land — and the registrations to trade internationally.
+      </p>
+    </div>
+    <ol class="why__list" role="list">
+      {
+        reasons.map((r, i) => (
+          <li data-reveal>
+            <span class="why__num" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+            <h3>{r.title}</h3>
+            <p>{r.text}</p>
+          </li>
+        ))
+      }
+    </ol>
+  </div>
+</section>
+
+<style>
+  .why {
+    display: grid;
+    grid-template-columns: 4fr 8fr;
+    gap: var(--s-7);
+    align-items: start;
+  }
+
+  .why__intro {
+    position: sticky;
+    top: calc(var(--header-h) + var(--s-6));
+  }
+
+  .why__list {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--s-3);
+  }
+
+  .why__list li {
+    display: grid;
+    align-content: start;
+    gap: var(--s-3);
+    padding: var(--s-6) var(--s-5);
+    border-radius: var(--r-card);
+    background: var(--white);
+  }
+
+  .why__num {
+    display: grid;
+    place-items: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    border-radius: 50%;
+    background: var(--orange-ink);
+    color: var(--white);
+    font-family: var(--font-display);
+    font-size: 1.25rem;
+    line-height: 1;
+    padding-top: 0.15rem;
+  }
+
+  .why__list li:nth-child(2) .why__num,
+  .why__list li:nth-child(5) .why__num {
+    background: var(--yellow);
+    color: var(--forest);
+  }
+
+  .why__list li:nth-child(3) .why__num,
+  .why__list li:nth-child(6) .why__num {
+    background: var(--sage);
+    color: var(--forest);
+  }
+
+  .why__list h3 {
+    font-size: 1.75rem;
+  }
+
+  .why__list p {
+    font-size: 0.9375rem;
+    color: var(--muted);
+  }
+
+  @media (max-width: 899px) {
+    .why {
+      grid-template-columns: 1fr;
+      gap: var(--s-5);
+    }
+    .why__intro {
+      position: static;
+    }
+  }
+
+  @media (max-width: 539px) {
+    .why__list {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

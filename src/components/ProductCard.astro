@@ -1,0 +1,147 @@
+---
+import { Picture } from 'astro:assets';
+import type { Category, Product } from '../data/catalogue';
+import { productImage } from '../lib/images';
+import { enquiryHref } from '../lib/enquiry';
+
+interface Props {
+  product: Product;
+  category: Category;
+}
+
+const { product, category } = Astro.props;
+---
+
+<article class="pcard" data-category={category.slug}>
+  <div class="pcard__img">
+    <Picture
+      src={productImage(product.image)}
+      formats={['avif', 'webp']}
+      widths={[320, 480, 640]}
+      sizes="(min-width: 1024px) 22vw, (min-width: 640px) 45vw, 100vw"
+      alt={product.name}
+    />
+    <span class="pcard__cat">
+      <span class="marker" data-marker={category.marker}></span>
+      {category.shortName}
+    </span>
+  </div>
+  <div class="pcard__body">
+    <h3 class="pcard__name">{product.name}</h3>
+    <p class="pcard__kind">{product.kind}</p>
+    <p class="pcard__desc">{product.summary}</p>
+    {product.origin && <p class="pcard__origin">Origin: {product.origin}</p>}
+    <a class="pcard__cta" href={enquiryHref(product.name)}>
+      Enquire<span class="visually-hidden"> about {product.name}</span>
+      <span aria-hidden="true">→</span>
+    </a>
+  </div>
+</article>
+
+<style>
+  .pcard {
+    display: grid;
+    grid-template-rows: auto 1fr;
+    height: 100%;
+    overflow: hidden;
+    border-radius: var(--r-card);
+    background: var(--white);
+    transition: transform 250ms var(--ease), box-shadow 250ms var(--ease);
+  }
+
+  .pcard:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 16px 32px -20px rgba(17, 42, 32, 0.45);
+  }
+
+  .pcard__img {
+    position: relative;
+    margin: 0.5rem 0.5rem 0;
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    border-radius: var(--r-inner);
+    background: var(--sage);
+  }
+
+  .pcard__img :global(picture) {
+    height: 100%;
+  }
+
+  .pcard__img :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 500ms var(--ease);
+  }
+
+  .pcard:hover .pcard__img :global(img) {
+    transform: scale(1.05);
+  }
+
+  .pcard__cat {
+    position: absolute;
+    left: 0.6rem;
+    top: 0.6rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.3rem 0.7rem;
+    border-radius: var(--r-pill);
+    background: var(--white);
+    color: var(--forest);
+    font-size: 0.75rem;
+    font-weight: 800;
+  }
+
+  .pcard__body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    padding: 1rem 1.15rem 1.15rem;
+  }
+
+  .pcard__name {
+    font-size: 1.625rem;
+    line-height: 1;
+  }
+
+  .pcard__kind {
+    font-size: 0.8125rem;
+    font-weight: 700;
+    color: var(--green);
+  }
+
+  .pcard__desc {
+    font-size: 0.9375rem;
+    color: var(--muted);
+  }
+
+  .pcard__origin {
+    font-size: 0.8125rem;
+    color: var(--muted);
+  }
+
+  .pcard__cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    align-self: flex-start;
+    margin-top: auto;
+    padding-top: 0.6rem;
+    min-height: 2.75rem;
+    color: var(--orange-ink);
+    font-size: 0.8125rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    text-decoration: none;
+  }
+
+  .pcard__cta span[aria-hidden] {
+    transition: transform 200ms var(--ease);
+  }
+
+  .pcard__cta:hover span[aria-hidden] {
+    transform: translateX(4px);
+  }
+</style>

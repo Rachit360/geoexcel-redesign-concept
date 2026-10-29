@@ -63,8 +63,8 @@ export const categories: Category[] = [
     lede: 'Basmati and non-basmati grades, steam, sella and parboiled.',
     intro:
       'Twelve grades, from extra-long 1121 and 1509 basmati to South Indian staples such as Sona Masuri, Ponni and Palakkadan Matta. Each sheet lists the grain and quality parameters Geo Excel publishes for that grade.',
-    photo: 'rice-red-texture',
-    photoAlt: 'Close-up of reddish-brown rice grains',
+    photo: 'hero-rice-spoon',
+    photoAlt: 'Long-grain white rice heaped around a wooden spoon',
     common: [{ label: 'Country of origin', value: 'India' }],
     products: [
       {
@@ -284,8 +284,8 @@ export const categories: Category[] = [
     lede: 'Whole spices and seeds from Kerala, Karnataka and other growing regions.',
     intro:
       'Cardamom, pepper, cloves, cinnamon, mace and nutmeg from South India, alongside seed spices and sesame. Sizes, grades and packing are listed per product.',
-    photo: 'band-spice-bowls',
-    photoAlt: 'Bowls of whole and ground spices seen from above',
+    photo: 'cloves-macro',
+    photoAlt: 'A pile of whole cloves',
     common: [{ label: 'Form', value: 'Whole, neither crushed nor ground' }],
     products: [
       {
@@ -497,8 +497,8 @@ export const categories: Category[] = [
     lede: 'Individually quick-frozen vegetables and frozen potato products.',
     intro:
       'IQF vegetables and a range of frozen potato products. Frozen potato products are the scope of Geo Excel’s APEDA registration as a merchant exporter.',
-    photo: 'fries-macro',
-    photoAlt: 'Frozen straight-cut potato fries',
+    photo: 'frozen-peas-macro',
+    photoAlt: 'Frozen green peas with a light coat of frost',
     common: [{ label: 'Storage', value: '−18 °C or below' }],
     products: [
       {
@@ -637,8 +637,8 @@ export const categories: Category[] = [
     lede: 'Cold-pressed Indian oils, Italian olive oils and ghee.',
     intro:
       'Cold-pressed coconut, groundnut, mustard and sesame oils from India, olive oils of Italian origin, and two types of ghee. Pack sizes run from 500 ml bottles to drums.',
-    photo: 'coconut-oil',
-    photoAlt: 'A bottle of coconut oil beside split coconuts',
+    photo: 'olive-oil-pour',
+    photoAlt: 'Oil being poured into a glass bowl',
     products: [
       {
         slug: 'coconut-oil',
@@ -791,3 +791,26 @@ export function findProduct(categorySlug: string, productSlug: string) {
 }
 
 export const productId = (categorySlug: string, productSlug: string) => `${categorySlug}/${productSlug}`;
+
+/**
+ * Indian states named as a region of origin in the product data, with the
+ * products that list them. Used for the "Geographic Excellence" section.
+ */
+const STATES = [
+  'Punjab',
+  'Kerala',
+  'Karnataka',
+  'Tamil Nadu',
+  'Andhra Pradesh',
+  'Gujarat',
+  'West Bengal',
+  'Odisha',
+  'Chhattisgarh',
+];
+
+export const regions = STATES.map((state) => ({
+  state,
+  products: allProducts.filter((p) => p.origin?.includes(state)),
+}))
+  .filter((r) => r.products.length > 0)
+  .sort((a, b) => b.products.length - a.products.length);

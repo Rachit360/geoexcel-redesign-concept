@@ -1,0 +1,129 @@
+---
+import { company, fullAddress, mapsHref } from '../../data/company';
+import { enquiryHref } from '../../lib/enquiry';
+import { url } from '../../lib/paths';
+---
+
+<section class="section wrap" id="contact" aria-labelledby="contact-title">
+  <div class="contact">
+    <div class="contact__main">
+      <p class="eyebrow">Get in touch</p>
+      <h2 id="contact-title">Ready to trade? Tell us what you need.</h2>
+      <p class="lead">
+        Send the product, quantity, packing and destination port. Your email app opens with an enquiry template ready to
+        fill in.
+      </p>
+      <div class="btn-row">
+        <a class="btn btn--dark" href={enquiryHref()}>Email an enquiry <span class="btn__arrow" aria-hidden="true">→</span></a>
+        <a class="btn btn--ghost" href={url('/products/')}>Browse products</a>
+      </div>
+    </div>
+    <dl class="contact__info">
+      <div>
+        <dt>Email</dt>
+        <dd><a href={`mailto:${company.email}`}>{company.email}</a></dd>
+      </div>
+      <div>
+        <dt>Phone</dt>
+        <dd><a href={company.phone.href}>{company.phone.display}</a></dd>
+      </div>
+      <div>
+        <dt>Office</dt>
+        <dd>
+          <address>{fullAddress.map((l) => <span>{l}</span>)}</address>
+          <a class="contact__map" href={mapsHref} target="_blank" rel="noopener">Open in Google Maps<span class="visually-hidden"> (opens in a new tab)</span></a>
+        </dd>
+      </div>
+    </dl>
+  </div>
+</section>
+
+<style>
+  .contact {
+    display: grid;
+    grid-template-columns: 7fr 5fr;
+    gap: var(--s-3);
+  }
+
+  .contact__main {
+    display: grid;
+    align-content: center;
+    gap: var(--s-5);
+    padding: clamp(2rem, 1rem + 4vw, 4.5rem);
+    border-radius: var(--r-panel);
+    background: var(--orange-ink);
+    color: var(--cream);
+  }
+
+  .contact__main h2 {
+    color: var(--cream);
+  }
+
+  .contact__main .eyebrow {
+    color: var(--cream);
+  }
+
+  .contact__main .lead {
+    max-width: 32rem;
+    color: var(--cream);
+  }
+
+  .contact__main .btn--ghost {
+    color: var(--cream);
+  }
+
+  .contact__main .btn--ghost:hover {
+    background: var(--cream);
+    border-color: var(--cream);
+    color: var(--forest);
+  }
+
+  .contact__info {
+    display: grid;
+    align-content: center;
+    gap: var(--s-5);
+    padding: clamp(1.5rem, 1rem + 2vw, 3rem);
+    border-radius: var(--r-panel);
+    background: var(--white);
+  }
+
+  .contact__info dt {
+    margin-bottom: 0.25rem;
+    font-size: 0.75rem;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--orange-ink);
+  }
+
+  .contact__info dd a {
+    color: var(--forest);
+    font-size: 1.125rem;
+    font-weight: 700;
+    text-decoration: none;
+    word-break: break-word;
+  }
+
+  .contact__info dd a:hover {
+    color: var(--orange-ink);
+  }
+
+  address {
+    display: grid;
+    margin-bottom: var(--s-2);
+    font-style: normal;
+    color: var(--muted);
+  }
+
+  .contact__info .contact__map {
+    font-size: 0.875rem;
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+
+  @media (max-width: 899px) {
+    .contact {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
