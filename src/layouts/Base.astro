@@ -1,9 +1,7 @@
 ---
-import '@fontsource-variable/newsreader/opsz.css';
-import '@fontsource-variable/newsreader/opsz-italic.css';
-import '@fontsource-variable/inter/index.css';
-import '@fontsource/ibm-plex-mono/400.css';
-import '@fontsource/ibm-plex-mono/500.css';
+import '@fontsource-variable/big-shoulders-stencil-display';
+import '@fontsource-variable/big-shoulders-display';
+import '@fontsource-variable/instrument-sans/index.css';
 import '../styles/global.css';
 
 import Header from '../components/Header.astro';
@@ -33,7 +31,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     <link rel="canonical" href={canonical} />
     <!-- Concept redesign: keep it out of search results so it is never mistaken for the official site. -->
     <meta name="robots" content="noindex, nofollow" />
-    <meta name="theme-color" content="#f5f1e8" />
+    <meta name="theme-color" content="#16202a" />
     <link rel="icon" href={url('/favicon.svg')} type="image/svg+xml" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content={fullTitle} />
@@ -67,12 +65,12 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     z-index: 70;
     transform: translate(-50%, 1rem);
     max-width: calc(100vw - 2rem);
-    padding: 0.8rem 1.1rem;
+    padding: 0.85rem 1.1rem;
     background: var(--ink);
-    color: var(--paper);
-    font-size: 0.9rem;
+    color: var(--bone);
+    font-size: 0.9375rem;
     font-weight: 500;
-    border-radius: var(--radius);
+    border-left: 6px solid var(--mark-orange);
     opacity: 0;
     pointer-events: none;
     transition:
@@ -86,7 +84,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
   }
 
   .toast a {
-    color: var(--paper);
+    color: var(--bone);
     pointer-events: auto;
   }
 </style>

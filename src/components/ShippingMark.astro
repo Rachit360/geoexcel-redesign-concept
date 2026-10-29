@@ -1,0 +1,22 @@
+---
+/**
+ * The signature element: a stencilled shipping mark, as sprayed on an export
+ * sack. It only ever carries real, published product data.
+ */
+interface Props {
+  name: string;
+  lines?: string[];
+  origin?: string;
+  class?: string;
+  reveal?: boolean;
+  headingLevel?: 'p' | 'h2' | 'h3';
+}
+const { name, lines = [], origin = 'Product of India', class: cls, reveal = false, headingLevel = 'p' } = Astro.props;
+const Name = headingLevel;
+---
+
+<div class:list={['mark', cls]} data-reveal={reveal ? '' : undefined}>
+  <p class="mark__origin">{origin}</p>
+  <Name class="mark__name">{name}</Name>
+  {lines.map((l) => <p class="mark__line">{l}</p>)}
+</div>

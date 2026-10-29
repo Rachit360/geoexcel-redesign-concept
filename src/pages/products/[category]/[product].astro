@@ -4,6 +4,7 @@ import Base from '../../../layouts/Base.astro';
 import Breadcrumbs from '../../../components/Breadcrumbs.astro';
 import SpecSheet from '../../../components/SpecSheet.astro';
 import AddToQuote from '../../../components/AddToQuote.astro';
+import ShippingMark from '../../../components/ShippingMark.astro';
 import { categories, type Category, type Product } from '../../../data/catalogue';
 import { url, categoryUrl, productUrl } from '../../../lib/paths';
 import { productImage } from '../../../lib/images';
@@ -55,10 +56,17 @@ const enquireHref = url(`/enquiry/?add=${category.slug}/${product.slug}`);
             loading="eager"
             fetchpriority="high"
           />
-          <figcaption>
-            <span class="mono">Fig. {category.number}.{String(index + 1).padStart(2, '0')}</span>
-            {product.name}. Illustrative photograph.
-          </figcaption>
+          <ShippingMark
+            class="product__mark"
+            origin={product.origin ? `Product of ${product.origin.split(', ').pop()}` : 'Geo Excel'}
+            name={product.name}
+            lines={[
+              ...(product.origin && product.origin.includes(',') ? [product.origin.split(',')[0]] : []),
+              ...(product.packing?.sizes ? [`Packs ${product.packing.sizes}`] : []),
+              ...(product.hs ? [`HS ${product.hs}`] : []),
+            ]}
+          />
+          <figcaption>{product.name}. Illustrative photograph.</figcaption>
         </figure>
       </div>
 
@@ -163,7 +171,15 @@ const enquireHref = url(`/enquiry/?add=${category.slug}/${product.slug}`);
 
   .product__media :global(img) {
     width: 100%;
-    background: var(--paper-sunk);
+    background: var(--jute-deep);
+    border: 3px solid var(--ink);
+  }
+
+  .product__media :global(.product__mark) {
+    width: min(22rem, 80%);
+    margin: calc(var(--s-8) * -1) 0 0 auto;
+    position: relative;
+    margin-right: calc(var(--s-5) * -1);
   }
 
   .product__body {
@@ -195,7 +211,7 @@ const enquireHref = url(`/enquiry/?add=${category.slug}/${product.slug}`);
 
   .product__ask {
     padding: var(--s-5);
-    background: var(--paper-deep);
+    background: var(--bone-deep);
   }
 
   .product__ask ul {
@@ -235,7 +251,7 @@ const enquireHref = url(`/enquiry/?add=${category.slug}/${product.slug}`);
   }
 
   .product__pager-name {
-    font-family: var(--font-serif);
+    font-family: var(--font-display);
     font-size: 1.125rem;
   }
 
@@ -274,7 +290,7 @@ const enquireHref = url(`/enquiry/?add=${category.slug}/${product.slug}`);
   }
 
   .more__name {
-    font-family: var(--font-serif);
+    font-family: var(--font-display);
     font-size: 1.1875rem;
   }
 
@@ -301,6 +317,10 @@ const enquireHref = url(`/enquiry/?add=${category.slug}/${product.slug}`);
     .product__media {
       position: static;
     }
+    .product__media :global(.product__mark) {
+      margin-right: 0;
+      width: 90%;
+    }
     .more {
       grid-template-columns: 1fr 1fr;
     }
@@ -313,11 +333,11 @@ const enquireHref = url(`/enquiry/?add=${category.slug}/${product.slug}`);
       justify-content: space-between;
       gap: var(--s-3);
       padding: 0.6rem var(--margin);
-      background: var(--paper);
+      background: var(--bone);
       border-top: 1px solid var(--ink);
     }
     .mobile-bar__name {
-      font-family: var(--font-serif);
+      font-family: var(--font-display);
       font-size: 1.0625rem;
       color: var(--ink);
       overflow: hidden;

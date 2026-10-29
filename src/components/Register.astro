@@ -62,20 +62,19 @@ const { caption = 'Registrations held by Geo Excel', detailed = false } = Astro.
   .register {
     width: 100%;
     border-collapse: collapse;
-    border-top: 1px solid var(--ink);
-    border-bottom: 1px solid var(--ink);
+    border: 3px solid var(--ink);
+    background: var(--bone);
     font-size: 0.9375rem;
   }
 
   .register thead th {
-    padding: 0.75rem 1rem 0.75rem 0;
-    border-bottom: 1px solid var(--ink);
-    font-size: 0.75rem;
-    font-weight: 600;
-    letter-spacing: 0.08em;
+    padding: 0.7rem 1rem;
+    background: var(--ink);
+    color: var(--bone);
+    font: 800 0.9375rem/1 var(--font-display);
+    letter-spacing: 0.12em;
     text-transform: uppercase;
     text-align: left;
-    color: var(--muted);
     white-space: nowrap;
   }
 
@@ -85,53 +84,53 @@ const { caption = 'Registrations held by Geo Excel', detailed = false } = Astro.
 
   .register td,
   .register tbody th {
-    padding: 1.1rem 1rem 1.1rem 0;
+    padding: 1.1rem 1rem;
     vertical-align: top;
     text-align: left;
     font-weight: 400;
   }
 
   .register__doc {
-    font-family: var(--font-serif);
-    font-size: 1.1875rem;
-    line-height: 1.25;
+    font-family: var(--font-display);
+    font-size: 1.3125rem;
+    font-weight: 750;
+    line-height: 1.1;
     color: var(--ink);
   }
 
   .register__issuer {
     display: block;
-    font-weight: 600;
+    font-family: var(--font-stencil);
+    font-size: 1.75rem;
+    font-weight: 850;
+    line-height: 1;
     color: var(--ink);
   }
 
   .register__issuer-full {
     display: block;
+    margin-top: 0.25rem;
     font-size: 0.8125rem;
     color: var(--muted);
-    max-width: 18rem;
+    max-width: 17rem;
   }
 
   .register .mono {
-    font-size: 0.875rem;
+    font-size: 1.125rem;
     color: var(--ink);
     white-space: nowrap;
   }
 
+  /* Status as an inspection stamp */
   .status {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.4rem;
-    font-size: 0.875rem;
-    font-weight: 600;
+    display: inline-block;
+    padding: 0.3rem 0.6rem 0.2rem;
+    border: 3px solid currentColor;
+    font: 850 1.0625rem/1 var(--font-stencil);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
     color: var(--alert);
-  }
-
-  .status::before {
-    content: '';
-    width: 0.5rem;
-    height: 0.5rem;
-    border-radius: 50%;
-    background: currentColor;
+    transform: rotate(-3deg);
   }
 
   .status--ok {
@@ -154,7 +153,7 @@ const { caption = 'Registrations held by Geo Excel', detailed = false } = Astro.
       display: block;
     }
     .register tbody tr {
-      padding: var(--s-5) 0;
+      padding: var(--s-5) var(--s-4);
     }
     .register td,
     .register tbody th {
@@ -164,12 +163,13 @@ const { caption = 'Registrations held by Geo Excel', detailed = false } = Astro.
       display: grid;
       grid-template-columns: 7.5rem minmax(0, 1fr);
       gap: var(--s-3);
-      margin-top: 0.5rem;
+      margin-top: 0.6rem;
       font-size: 0.875rem;
     }
     .register td[data-label]::before {
       content: attr(data-label);
       color: var(--muted);
+      font-weight: 600;
     }
     .register .mono {
       white-space: normal;

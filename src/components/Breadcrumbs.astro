@@ -28,22 +28,25 @@ const { items } = Astro.props;
     display: flex;
     flex-wrap: wrap;
     gap: 0.35rem;
-    font-size: 0.8125rem;
-    color: var(--muted);
+    font: 750 0.9375rem/1.4 var(--font-display);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink);
   }
   .breadcrumbs li + li::before {
     content: '/';
     margin-right: 0.35rem;
-    color: var(--rule);
+    color: var(--red);
   }
   .breadcrumbs a {
-    color: var(--muted);
+    color: var(--ink);
     text-underline-offset: 0.2em;
   }
   .breadcrumbs a:hover {
-    color: var(--ink);
+    color: var(--red);
   }
   .breadcrumbs [aria-current] {
     color: var(--ink);
+    opacity: 0.8;
   }
 </style>

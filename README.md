@@ -39,12 +39,15 @@ No company material was supplied, so the only sources are Geo Excel's public web
 - All photographs come from geoexcel.group. Captions describe only the product type and never suggest a Geo Excel facility.
 - `npm run build` fails if placeholder wording (TBC, TODO, lorem ipsum…) reaches the output, if any internal link or asset is broken, or if an expired registration is listed (`scripts/check-build.mjs`).
 
-## Design: “Origin & Record”
+## Design: “Shipping Mark”
 
-- **Palette:** warm paper (`#f5f1e8`), the existing Geo Excel navy (`#072136`) as ink, and fine rules. The logo's four colours are used only as category markers (01 Rice ■ green, 02 Spices ■ orange, 03 Frozen ■ teal, 04 Oils ■ red, 05 Footwear □).
-- **Type:** Newsreader for headlines, Inter for text and interface, IBM Plex Mono for specification values and registration numbers. All are self-hosted.
-- **Layout:** document-style sheets and registers alternate with asymmetric image sections, a full-width image band and a staggered image triptych.
-- **Interaction:** quiet. One-time reveals (disabled under `prefers-reduced-motion`), hover states, no scroll-jacking, no autoplaying media.
+The visual language is taken from the physical world of the export trade rather than from other websites: the stencilled marks sprayed on jute and PP sacks, hessian texture, and the red of an inspection stamp.
+
+- **Palette:** jute (`#d6c39b`), unbleached bone (`#f2ede3`), stencil ink (`#16202a`, a deepened version of the Geo Excel navy) and stamp red (`#b3302a`). The logo's four stroke colours code the categories: 01 Rice green, 02 Spices orange, 03 Frozen teal, 04 Oils red.
+- **Type:** Big Shoulders Stencil Display for display headings (the voice of a sack mark), Big Shoulders Display for figures and labels, and Instrument Sans for reading text. All are self-hosted.
+- **Signature element:** the *shipping mark*, a bordered stencil label with a hard offset shadow. It carries only real product data (name, origin, pack sizes, HS code) and appears in the hero and on every product page.
+- **Composition:** a poster-scale hero, a colour-banded category board, specifications set as oversized figures, a worked example of the enquiry document, registration status shown as inspection stamps, and a stamp-red call to action.
+- **Design process:** the UX and UI designer skills in `.claude/skills/`, which cover material derivation, the banned AI-look checklist and the brand-swap test.
 
 ## Stack
 

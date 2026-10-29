@@ -11,7 +11,7 @@ interface Props {
 const { label, title, lede, crumbs } = Astro.props;
 ---
 
-<section class="page-intro">
+<section class="page-intro jute">
   <div class="wrap">
     <Breadcrumbs items={crumbs} />
     <div class="page-intro__body">
@@ -33,8 +33,8 @@ const { label, title, lede, crumbs } = Astro.props;
 
 <style>
   .page-intro {
-    padding-block: var(--s-6) var(--s-8);
-    border-bottom: 1px solid var(--rule);
+    padding-block: var(--s-5) var(--s-8);
+    border-bottom: 3px solid var(--ink);
   }
   .page-intro__body {
     display: grid;
@@ -45,14 +45,17 @@ const { label, title, lede, crumbs } = Astro.props;
     align-items: end;
   }
   .page-intro__title {
-    grid-column: 1 / span 7;
+    grid-column: 1 / span 8;
     display: grid;
     gap: var(--s-4);
   }
   .page-intro__lede {
-    grid-column: 8 / span 5;
+    grid-column: 9 / span 4;
     display: grid;
     gap: var(--s-4);
+  }
+  .page-intro .muted {
+    color: var(--ink);
   }
   @media (max-width: 899px) {
     .page-intro__body {

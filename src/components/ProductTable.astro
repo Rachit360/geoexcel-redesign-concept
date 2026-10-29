@@ -67,25 +67,28 @@ const { category, caption } = Astro.props;
   .ptable {
     width: 100%;
     border-collapse: collapse;
-    border-top: 1px solid var(--ink);
-    border-bottom: 1px solid var(--ink);
+    border: 3px solid var(--ink);
+    background: var(--bone);
     font-size: 0.9375rem;
   }
 
   .ptable thead th {
-    padding: 0.75rem 0.75rem 0.75rem 0;
-    border-bottom: 1px solid var(--ink);
-    font-size: 0.75rem;
-    font-weight: 600;
-    letter-spacing: 0.08em;
+    padding: 0.7rem 0.75rem 0.7rem 0;
+    background: var(--ink);
+    color: var(--bone);
+    font: 800 0.9375rem/1 var(--font-display);
+    letter-spacing: 0.12em;
     text-transform: uppercase;
     text-align: left;
-    color: var(--muted);
+  }
+
+  .ptable thead th:first-child {
+    padding-left: 0.75rem;
   }
 
   .ptable tbody tr {
     border-bottom: 1px solid var(--rule);
-    transition: background-color 200ms var(--ease);
+    transition: background-color 160ms var(--ease);
   }
 
   .ptable tbody tr:last-child {
@@ -93,24 +96,26 @@ const { category, caption } = Astro.props;
   }
 
   .ptable tbody tr:hover {
-    background: var(--paper-deep);
+    background: #fbf8f2;
   }
 
   .ptable td,
   .ptable tbody th {
-    padding: 1rem 0.75rem 1rem 0;
+    padding: 0.9rem 0.75rem 0.9rem 0;
     vertical-align: top;
     text-align: left;
     font-weight: 400;
   }
 
   .ptable__thumb {
-    width: 5.5rem;
+    width: 6rem;
+    padding-left: 0.75rem !important;
   }
 
   .ptable__thumb .ratio {
     display: block;
-    width: 4.5rem;
+    width: 4.75rem;
+    border: 2px solid var(--ink);
   }
 
   .ptable__thumb :global(img) {
@@ -120,45 +125,45 @@ const { category, caption } = Astro.props;
   }
 
   .ptable__name {
-    min-width: 12rem;
+    min-width: 13rem;
   }
 
   .ptable__name a {
     display: block;
-    font-family: var(--font-serif);
-    font-size: 1.3125rem;
-    line-height: 1.2;
+    font-family: var(--font-stencil);
+    font-size: 1.625rem;
+    font-weight: 850;
+    line-height: 0.95;
+    text-transform: uppercase;
     color: var(--ink);
     text-decoration: none;
   }
 
   .ptable__name a:hover {
-    text-decoration: underline;
-    text-underline-offset: 0.2em;
-    text-decoration-thickness: 1px;
+    color: var(--red);
   }
 
   .ptable__name > span {
     display: block;
-    margin-top: 0.3rem;
+    margin-top: 0.35rem;
     font-size: 0.8125rem;
     color: var(--muted);
   }
 
   .ptable__params {
     display: grid;
-    gap: 0.2rem;
+    gap: 0.25rem;
     font-size: 0.875rem;
   }
 
-  .ptable__params .mono {
+  .ptable .mono {
+    font-size: 1.0625rem;
     color: var(--ink);
   }
 
   .ptable__action {
     text-align: right !important;
     white-space: nowrap;
-    padding-right: 0 !important;
   }
 
   .ptable tr[hidden] {
@@ -185,7 +190,7 @@ const { category, caption } = Astro.props;
       display: grid;
       grid-template-columns: 4.5rem minmax(0, 1fr);
       column-gap: var(--s-4);
-      padding: var(--s-5) 0;
+      padding: var(--s-5) var(--s-4);
     }
     .ptable td,
     .ptable tbody th {
@@ -196,6 +201,10 @@ const { category, caption } = Astro.props;
       grid-column: 1 !important;
       grid-row: 1 / span 6;
       width: auto;
+      padding-left: 0 !important;
+    }
+    .ptable__thumb .ratio {
+      width: 4.5rem;
     }
     .ptable td[data-label] {
       display: grid;
@@ -207,7 +216,7 @@ const { category, caption } = Astro.props;
     .ptable td[data-label]::before {
       content: attr(data-label);
       color: var(--muted);
-      font-family: var(--font-sans);
+      font-weight: 600;
     }
     .ptable__action {
       margin-top: var(--s-4);
