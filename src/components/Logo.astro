@@ -1,0 +1,47 @@
+---
+/**
+ * Geo Excel mark, redrawn as SVG from the logo published on geoexcel.group,
+ * set beside a typographic wordmark.
+ */
+interface Props {
+  inverse?: boolean;
+}
+const { inverse = false } = Astro.props;
+---
+
+<span class:list={['logo', { 'logo--inverse': inverse }]}>
+  <svg class="logo__mark" viewBox="140 30 310 440" aria-hidden="true" focusable="false">
+    <g fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="44">
+      <path stroke="#F2901C" d="M226 152 183 109V380"></path>
+      <path stroke="#E01E28" d="M184 396 341 241"></path>
+      <path stroke="#5BC8B0" d="M258 220 418 58"></path>
+      <path stroke="#4CB654" d="M258 437 418 277"></path>
+    </g>
+  </svg>
+  <span class="logo__word">Geo Excel</span>
+</span>
+
+<style>
+  .logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    color: var(--ink);
+  }
+  .logo__mark {
+    width: auto;
+    height: 2.1rem;
+  }
+  .logo__word {
+    font-family: var(--font-sans);
+    font-weight: 600;
+    font-size: 1.0625rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    line-height: 1;
+    white-space: nowrap;
+  }
+  .logo--inverse {
+    color: var(--paper);
+  }
+</style>

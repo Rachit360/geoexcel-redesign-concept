@@ -1,0 +1,50 @@
+---
+import { company } from '../data/company';
+import { url } from '../lib/paths';
+---
+
+<aside class="concept-bar" aria-label="Concept notice">
+  <div class="wrap concept-bar__inner">
+    <p>
+      <span class="concept-bar__tag mono">Concept</span>
+      Redesign proposal — not the official Geo Excel website.
+      <a href={company.officialSite} rel="noopener">Official site</a>
+      <span aria-hidden="true">·</span>
+      <a href={url('/about-this-redesign/')}>About this redesign</a>
+    </p>
+  </div>
+</aside>
+
+<style>
+  .concept-bar {
+    background: var(--paper-deep);
+    border-bottom: 1px solid var(--rule);
+    font-size: 0.8125rem;
+    color: var(--muted);
+  }
+
+  .concept-bar__inner {
+    padding-block: 0.45rem;
+  }
+
+  .concept-bar p {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.25rem 0.5rem;
+  }
+
+  .concept-bar__tag {
+    padding: 0.05rem 0.4rem;
+    border: 1px solid var(--muted);
+    font-size: 0.6875rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ink);
+  }
+
+  .concept-bar a {
+    color: var(--ink);
+    text-underline-offset: 0.2em;
+  }
+</style>

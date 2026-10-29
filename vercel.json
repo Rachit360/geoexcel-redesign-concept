@@ -1,0 +1,15 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "trailingSlash": true,
+  "redirects": [
+    { "source": "/about", "destination": "/group/", "permanent": true },
+    { "source": "/about-1", "destination": "/group/#commitments", "permanent": true },
+    { "source": "/projects", "destination": "/products/", "permanent": true },
+    { "source": "/general-9", "destination": "/products/rice/", "permanent": true },
+    { "source": "/copy-of-rice", "destination": "/products/spices/", "permanent": true },
+    { "source": "/copy-of-whole-spices", "destination": "/products/frozen-foods/", "permanent": true },
+    { "source": "/copy-of-whole-spices-1", "destination": "/products/edible-oils-ghee/", "permanent": true },
+    { "source": "/fashion-lifestyle", "destination": "/products/leather-footwear/", "permanent": true },
+    { "source": "/certificates", "destination": "/quality/", "permanent": true }
+  ]
+}

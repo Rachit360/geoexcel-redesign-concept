@@ -1,0 +1,189 @@
+---
+import Base from '../../layouts/Base.astro';
+import PageIntro from '../../components/PageIntro.astro';
+import ProductTable from '../../components/ProductTable.astro';
+import EnquiryBand from '../../components/EnquiryBand.astro';
+import { categories, footwear, productCount } from '../../data/catalogue';
+import { url, categoryUrl } from '../../lib/paths';
+---
+
+<Base
+  title="Products"
+  description={`All ${productCount} Geo Excel product sheets: rice, whole spices, IQF frozen foods, edible oils and ghee, with origin, key parameters, pack sizes and HS codes.`}
+>
+  <PageIntro
+    crumbs={[{ label: 'Products' }]}
+    label="Product index"
+    title="Every product, on one page."
+    lede={`${productCount} product sheets in four categories, plus a leather footwear line. Search or scan the key parameters, then add products to your quote list.`}
+  />
+
+  <section class="section section--tight">
+    <div class="wrap">
+      <div class="finder">
+        <div class="field finder__field">
+          <label for="product-search">Search products</label>
+          <input id="product-search" type="search" placeholder="e.g. basmati, Kerala, 1006.30, cold pressed" autocomplete="off" data-search-input />
+        </div>
+        <nav class="finder__jump" aria-label="Jump to category">
+          <ul role="list">
+            {
+              categories.map((c) => (
+                <li>
+                  <a href={`#${c.slug}`}>
+                    <span class="marker" data-marker={c.marker} />
+                    <span class="mono">{c.number}</span> {c.shortName}
+                  </a>
+                </li>
+              ))
+            }
+            <li>
+              <a href={categoryUrl(footwear.slug)}>
+                <span class="marker" data-marker={footwear.marker} />
+                <span class="mono">{footwear.number}</span> Footwear
+              </a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+      <p class="finder__status small muted" role="status" aria-live="polite" data-search-status></p>
+
+      {
+        categories.map((c) => (
+          <section class="pcat" id={c.slug} aria-labelledby={`h-${c.slug}`} data-search-group>
+            <header class="pcat__head">
+              <h2 id={`h-${c.slug}`}>
+                <span class="mono pcat__num">{c.number}</span>
+                <span class="marker" data-marker={c.marker} />
+                {c.name}
+              </h2>
+              <a class="link link--arrow" href={categoryUrl(c.slug)}>
+                Category overview
+              </a>
+            </header>
+            <ProductTable category={c} caption={`${c.name}: products, origin, key parameters, pack sizes and HS codes`} />
+          </section>
+        ))
+      }
+
+      <section class="pcat" id="leather-footwear" aria-labelledby="h-footwear">
+        <header class="pcat__head">
+          <h2 id="h-footwear">
+            <span class="mono pcat__num">{footwear.number}</span>
+            <span class="marker" data-marker={footwear.marker} />
+            {footwear.name}
+          </h2>
+          <a class="link link--arrow" href={categoryUrl(footwear.slug)}>See the line</a>
+        </header>
+        <p class="muted">{footwear.lede}</p>
+      </section>
+    </div>
+  </section>
+
+  <EnquiryBand title="Found what you need? Send one enquiry for the whole list." />
+</Base>
+
+<script>
+  const input = document.querySelector<HTMLInputElement>('[data-search-input]');
+  const status = document.querySelector<HTMLElement>('[data-search-status]');
+  const groups = [...document.querySelectorAll<HTMLElement>('[data-search-group]')];
+
+  function apply() {
+    const q = (input?.value ?? '').trim().toLowerCase();
+    let shown = 0;
+    groups.forEach((g) => {
+      let inGroup = 0;
+      g.querySelectorAll<HTMLTableRowElement>('tr[data-search]').forEach((row) => {
+        const text = row.dataset.search + ' ' + row.textContent!.toLowerCase();
+        const match = !q || q.split(/\s+/).every((w) => text.includes(w));
+        row.hidden = !match;
+        if (match) inGroup++;
+      });
+      g.hidden = inGroup === 0;
+      shown += inGroup;
+    });
+    if (status) status.textContent = q ? `${shown} ${shown === 1 ? 'product matches' : 'products match'} “${input!.value.trim()}”.` : '';
+  }
+
+  input?.addEventListener('input', apply);
+</script>
+
+<style>
+  .finder {
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    gap: var(--s-6);
+    align-items: end;
+    padding-bottom: var(--s-5);
+  }
+
+  .finder__jump ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-2) var(--s-5);
+    justify-content: flex-end;
+  }
+
+  .finder__jump a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    min-height: 2.75rem;
+    color: var(--ink);
+    font-size: 0.9375rem;
+    font-weight: 500;
+    text-decoration: none;
+  }
+
+  .finder__jump a:hover {
+    text-decoration: underline;
+    text-underline-offset: 0.25em;
+  }
+
+  .finder__jump .mono {
+    font-size: 0.75rem;
+    color: var(--muted);
+  }
+
+  .finder__status {
+    min-height: 1.5em;
+  }
+
+  .pcat {
+    margin-top: var(--s-8);
+  }
+
+  .pcat[hidden] {
+    display: none;
+  }
+
+  .pcat__head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--s-3);
+    margin-bottom: var(--s-5);
+  }
+
+  .pcat__head h2 {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: var(--step-h3);
+  }
+
+  .pcat__num {
+    font-size: 0.8125rem;
+    color: var(--muted);
+  }
+
+  @media (max-width: 899px) {
+    .finder {
+      grid-template-columns: 1fr;
+    }
+    .finder__jump ul {
+      justify-content: flex-start;
+    }
+  }
+</style>

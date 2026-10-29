@@ -1,0 +1,382 @@
+---
+import { Picture } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import PageIntro from '../components/PageIntro.astro';
+import EnquiryBand from '../components/EnquiryBand.astro';
+import { categories } from '../data/catalogue';
+import { url, categoryUrl } from '../lib/paths';
+import { photo } from '../lib/images';
+
+const steps = [
+  {
+    title: 'Build a quote list',
+    text: 'Open the product sheets you need and add each one to your quote list. The list is held in your browser, so you can keep browsing and come back to it.',
+  },
+  {
+    title: 'Send one structured enquiry',
+    text: 'For every line, give the quantity, unit and packing you want. Add the destination, Incoterm and target shipment month once for the whole enquiry.',
+  },
+  {
+    title: 'Receive a quotation',
+    text: 'The quotation sets out what Geo Excel can offer for each line — grade, packing, terms and price — so you can compare it directly with your requirement.',
+  },
+  {
+    title: 'Agree the contract',
+    text: 'The final specification, packing, Incoterm, payment terms and the documents your market requires are fixed in the contract before the goods are dispatched.',
+  },
+];
+
+const incoterms = [
+  { code: 'EXW', name: 'Ex Works', carriage: 'Buyer', risk: 'At the seller’s premises', note: 'Buyer also handles export clearance.' },
+  { code: 'FCA', name: 'Free Carrier', carriage: 'Buyer', risk: 'When handed to the buyer’s carrier', note: 'Seller clears the goods for export.' },
+  { code: 'FOB', name: 'Free on Board', carriage: 'Buyer', risk: 'When loaded on board at the port of shipment', note: 'Sea and inland waterway only.' },
+  { code: 'CFR', name: 'Cost and Freight', carriage: 'Seller', risk: 'When loaded on board at the port of shipment', note: 'Seller pays freight to the destination port.' },
+  { code: 'CIF', name: 'Cost, Insurance and Freight', carriage: 'Seller', risk: 'When loaded on board at the port of shipment', note: 'As CFR, plus minimum insurance cover for the buyer.' },
+  { code: 'DAP', name: 'Delivered at Place', carriage: 'Seller', risk: 'At the named place of destination', note: 'Buyer handles import clearance and duties.' },
+  { code: 'DDP', name: 'Delivered Duty Paid', carriage: 'Seller', risk: 'At the named place of destination', note: 'Seller also clears the goods for import.' },
+];
+
+const packing = categories.map((c) => {
+  const sizes = [...new Set(c.products.map((p) => p.packing?.sizes).filter(Boolean))] as string[];
+  const types = [
+    ...new Set(
+      c.products
+        .flatMap((p) => (p.packing?.types ?? '').split(','))
+        .map((t) => t.trim())
+        .filter(Boolean)
+        .map((t) => t.charAt(0).toUpperCase() + t.slice(1)),
+    ),
+  ];
+  return { c, sizes, types };
+});
+---
+
+<Base
+  title="How we work"
+  description="How to request a quotation from Geo Excel: build a quote list, send one structured enquiry, and agree the specification, Incoterm and documents in the contract."
+>
+  <PageIntro
+    crumbs={[{ label: 'How we work' }]}
+    label="How we work"
+    title="From quote list to contract."
+    lede="A quotation is only as good as the enquiry behind it. This is how to give us everything needed to quote accurately the first time."
+  />
+
+  <section class="section" aria-labelledby="steps-title">
+    <div class="wrap grid hw">
+      <div class="hw__aside">
+        <h2 id="steps-title">Four steps</h2>
+        <figure class="figure">
+          <div class="ratio ratio--4x5">
+            <Picture src={photo('coconut-oil')} formats={['avif', 'webp']} widths={[480, 800]} sizes="(min-width: 900px) 34vw, 100vw" alt="A bottle of coconut oil beside split coconuts" />
+          </div>
+          <figcaption><span class="mono">Fig. 01</span> Coconut oil.</figcaption>
+        </figure>
+      </div>
+      <ol class="hw__steps" role="list">
+        {
+          steps.map((s, i) => (
+            <li data-reveal>
+              <span class="numeral">{String(i + 1).padStart(2, '0')}</span>
+              <div>
+                <h3>{s.title}</h3>
+                <p>{s.text}</p>
+              </div>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  <section class="section section--deep" aria-labelledby="include-title">
+    <div class="wrap grid include">
+      <div class="include__head">
+        <p class="label">Checklist</p>
+        <h2 id="include-title">What to include in an enquiry</h2>
+      </div>
+      <dl class="include__list">
+        <div><dt>Product and grade</dt><dd>Name the product sheet, and any grade, size or parameter that matters to you.</dd></div>
+        <div><dt>Quantity</dt><dd>In kilograms, tonnes, litres or containers — per shipment and, for recurring supply, per month.</dd></div>
+        <div><dt>Packing</dt><dd>Pack size and type, and whether you need private-label or buyer-specific marking.</dd></div>
+        <div><dt>Destination and Incoterm</dt><dd>The destination port or place, and the Incoterm you want quoted.</dd></div>
+        <div><dt>Timing</dt><dd>Target shipment month, and whether you need samples first.</dd></div>
+        <div><dt>Documents and testing</dt><dd>Certificates your market requires, and any independent inspection or laboratory analysis you want.</dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <section class="section" id="incoterms" aria-labelledby="incoterms-title">
+    <div class="wrap">
+      <div class="heading heading--split">
+        <div class="flow" style="--flow: 1rem">
+          <p class="label">Reference</p>
+          <h2 id="incoterms-title">Incoterms at a glance</h2>
+        </div>
+        <p class="lead">
+          The Incoterms® 2020 rules most often used for food exports. Name the one you want quoted, or ask for advice in
+          your enquiry.
+        </p>
+      </div>
+      <div class="table-scroll" role="region" aria-label="Incoterms table, scrollable" tabindex="0">
+        <table class="terms">
+          <thead>
+            <tr>
+              <th scope="col">Rule</th>
+              <th scope="col">Main carriage paid by</th>
+              <th scope="col">Risk passes to buyer</th>
+              <th scope="col">Note</th>
+            </tr>
+          </thead>
+          <tbody>
+            {
+              incoterms.map((t) => (
+                <tr>
+                  <th scope="row">
+                    <span class="mono terms__code">{t.code}</span>
+                    <span class="terms__name">{t.name}</span>
+                  </th>
+                  <td>{t.carriage}</td>
+                  <td>{t.risk}</td>
+                  <td class="muted">{t.note}</td>
+                </tr>
+              ))
+            }
+          </tbody>
+        </table>
+      </div>
+      <p class="small muted terms__foot">
+        A summary for orientation only. Incoterms® is a trademark of the International Chamber of Commerce; the ICC rules
+        govern.
+      </p>
+    </div>
+  </section>
+
+  <section class="section section--deep" aria-labelledby="packing-title">
+    <div class="wrap">
+      <div class="heading heading--split">
+        <div class="flow" style="--flow: 1rem">
+          <p class="label">Packing</p>
+          <h2 id="packing-title">Published pack sizes</h2>
+        </div>
+        <p class="lead">Drawn from the product sheets. Other packing can be requested in your enquiry.</p>
+      </div>
+      <div class="packing">
+        {
+          packing.map(({ c, sizes, types }) => (
+            <a class="packing__item" href={categoryUrl(c.slug)}>
+              <p class="packing__cat">
+                <span class="marker" data-marker={c.marker} />
+                <span class="mono">{c.number}</span> {c.shortName}
+              </p>
+              <p class="packing__sizes mono">{sizes.length ? sizes.join(' · ') : 'On request'}</p>
+              {types.length > 0 && <p class="small muted">{types.join(', ')}</p>}
+            </a>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <EnquiryBand />
+</Base>
+
+<style>
+  .hw {
+    row-gap: var(--s-7);
+    align-items: start;
+  }
+
+  .hw__aside {
+    grid-column: 1 / span 4;
+    display: grid;
+    gap: var(--s-6);
+    position: sticky;
+    top: calc(var(--header-h) + var(--s-5));
+  }
+
+  .hw__steps {
+    grid-column: 6 / span 7;
+    border-top: 1px solid var(--ink);
+  }
+
+  .hw__steps li {
+    display: grid;
+    grid-template-columns: 5rem minmax(0, 1fr);
+    gap: var(--s-5);
+    padding: var(--s-7) 0;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .hw__steps .numeral {
+    font-size: 3.25rem;
+    line-height: 0.9;
+  }
+
+  .hw__steps h3 {
+    margin-bottom: var(--s-3);
+  }
+
+  .hw__steps p {
+    max-width: 36rem;
+  }
+
+  .include {
+    row-gap: var(--s-6);
+  }
+
+  .include__head {
+    grid-column: 1 / span 4;
+    display: grid;
+    gap: var(--s-4);
+    align-content: start;
+  }
+
+  .include__list {
+    grid-column: 6 / span 7;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0 var(--gutter);
+  }
+
+  .include__list > div {
+    padding: var(--s-5) 0;
+    border-top: 1px solid var(--ink);
+  }
+
+  .include__list dt {
+    font-family: var(--font-serif);
+    font-size: 1.25rem;
+    color: var(--ink);
+    margin-bottom: var(--s-2);
+  }
+
+  .table-scroll {
+    overflow-x: auto;
+  }
+
+  .terms {
+    width: 100%;
+    min-width: 44rem;
+    border-collapse: collapse;
+    border-top: 1px solid var(--ink);
+    border-bottom: 1px solid var(--ink);
+    font-size: 0.9375rem;
+  }
+
+  .terms thead th {
+    padding: 0.75rem 1rem 0.75rem 0;
+    border-bottom: 1px solid var(--ink);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    text-align: left;
+    color: var(--muted);
+  }
+
+  .terms td,
+  .terms tbody th {
+    padding: 1rem 1rem 1rem 0;
+    border-bottom: 1px solid var(--rule);
+    vertical-align: top;
+    text-align: left;
+    font-weight: 400;
+  }
+
+  .terms tbody tr:last-child > * {
+    border-bottom: 0;
+  }
+
+  .terms__code {
+    display: inline-block;
+    min-width: 3rem;
+    font-weight: 500;
+    color: var(--ink);
+  }
+
+  .terms__name {
+    font-family: var(--font-serif);
+    font-size: 1.125rem;
+    color: var(--ink);
+  }
+
+  .terms__foot {
+    margin-top: var(--s-4);
+  }
+
+  .packing {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: var(--gutter);
+  }
+
+  .packing__item {
+    display: grid;
+    gap: var(--s-3);
+    align-content: start;
+    padding-top: var(--s-4);
+    border-top: 1px solid var(--ink);
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .packing__cat {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: var(--font-serif);
+    font-size: 1.25rem;
+    color: var(--ink);
+  }
+
+  .packing__cat .mono {
+    font-size: 0.75rem;
+    color: var(--muted);
+  }
+
+  .packing__sizes {
+    font-size: 0.875rem;
+    color: var(--ink);
+    line-height: 1.6;
+  }
+
+  .packing__item:hover .packing__cat {
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+    text-decoration-thickness: 1px;
+  }
+
+  @media (max-width: 899px) {
+    .hw__aside,
+    .hw__steps,
+    .include__head,
+    .include__list {
+      grid-column: 1 / -1;
+    }
+    .hw__aside {
+      position: static;
+    }
+    .hw__aside figure {
+      max-width: 22rem;
+    }
+    .packing {
+      grid-template-columns: 1fr 1fr;
+      row-gap: var(--s-6);
+    }
+  }
+
+  @media (max-width: 539px) {
+    .include__list,
+    .packing {
+      grid-template-columns: 1fr;
+    }
+    .hw__steps li {
+      grid-template-columns: 3.25rem minmax(0, 1fr);
+      gap: var(--s-4);
+    }
+    .hw__steps .numeral {
+      font-size: 2.25rem;
+    }
+  }
+</style>

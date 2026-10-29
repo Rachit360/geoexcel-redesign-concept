@@ -1,0 +1,485 @@
+---
+import Logo from './Logo.astro';
+import { categories, footwear } from '../data/catalogue';
+import { company } from '../data/company';
+import { url, categoryUrl } from '../lib/paths';
+
+const path = Astro.url.pathname;
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const is = (p: string) => path === `${base}${p}` || path.startsWith(`${base}${p}`);
+
+const links = [
+  { href: '/how-we-work/', label: 'How we work' },
+  { href: '/quality/', label: 'Quality' },
+  { href: '/group/', label: 'The Group' },
+  { href: '/contact/', label: 'Contact' },
+];
+
+const productsActive = is('/products/');
+---
+
+<header class="site-header" data-header>
+  <div class="wrap site-header__inner">
+    <a class="site-header__brand" href={url('/')} aria-label="Geo Excel — home">
+      <Logo />
+    </a>
+
+    <nav class="primary-nav" aria-label="Main">
+      <ul role="list">
+        <li>
+          <button
+            class="primary-nav__link primary-nav__trigger"
+            type="button"
+            aria-expanded="false"
+            aria-controls="products-panel"
+            data-panel-trigger
+            aria-current={productsActive ? 'true' : undefined}
+          >
+            Products
+            <svg viewBox="0 0 10 6" aria-hidden="true" focusable="false"><path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.5"></path></svg>
+          </button>
+        </li>
+        {
+          links.map((l) => (
+            <li>
+              <a class="primary-nav__link" href={url(l.href)} aria-current={is(l.href) ? 'page' : undefined}>
+                {l.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <div class="site-header__actions">
+      <a class="btn btn--small site-header__quote" href={url('/enquiry/')}>
+        <span class="site-header__quote-full">Request a quote</span>
+        <span class="site-header__quote-short" aria-hidden="true">Quote</span>
+        <span class="quote-count" data-quote-count hidden></span>
+      </a>
+      <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="mobile-menu" aria-label="Menu" data-menu-toggle>
+        <span class="menu-toggle__bars" aria-hidden="true"><span></span><span></span></span>
+        <span class="menu-toggle__label">Menu</span>
+      </button>
+    </div>
+  </div>
+
+  <div class="products-panel" id="products-panel" hidden data-panel>
+    <div class="wrap products-panel__inner">
+      <div class="products-panel__list">
+        <p class="label">Products</p>
+        <ol role="list">
+          {
+            categories.map((c) => (
+              <li>
+                <a href={categoryUrl(c.slug)}>
+                  <span class="mono products-panel__num">{c.number}</span>
+                  <span class="marker" data-marker={c.marker} />
+                  <span class="products-panel__name">{c.name}</span>
+                  <span class="products-panel__count mono">{c.products.length}</span>
+                </a>
+              </li>
+            ))
+          }
+          <li>
+            <a href={categoryUrl(footwear.slug)}>
+              <span class="mono products-panel__num">{footwear.number}</span>
+              <span class="marker" data-marker={footwear.marker} />
+              <span class="products-panel__name">{footwear.name}</span>
+              <span class="products-panel__count mono">—</span>
+            </a>
+          </li>
+        </ol>
+        <a class="link link--arrow" href={url('/products/')}>All products</a>
+      </div>
+      <div class="products-panel__aside">
+        <p class="label">Not sure which grade?</p>
+        <p>
+          Send the product, quantity and destination port. Geo Excel will confirm the specification it can offer.
+        </p>
+        <a class="btn btn--secondary btn--small" href={url('/enquiry/')}>Start an enquiry</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="drawer" id="mobile-menu" hidden data-drawer role="dialog" aria-modal="true" aria-label="Menu">
+    <div class="drawer__top">
+      <a class="site-header__brand" href={url('/')} aria-label="Geo Excel — home"><Logo /></a>
+      <button class="menu-toggle" type="button" data-drawer-close aria-label="Close menu">
+        <span class="menu-toggle__x" aria-hidden="true"></span>
+        <span class="menu-toggle__label">Close</span>
+      </button>
+    </div>
+    <nav class="drawer__body" aria-label="Mobile">
+      <p class="label">Products</p>
+      <ol role="list" class="drawer__products">
+        {
+          categories.map((c) => (
+            <li>
+              <a href={categoryUrl(c.slug)}>
+                <span class="mono">{c.number}</span>
+                <span class="marker" data-marker={c.marker} />
+                {c.name}
+              </a>
+            </li>
+          ))
+        }
+        <li>
+          <a href={categoryUrl(footwear.slug)}>
+            <span class="mono">{footwear.number}</span>
+            <span class="marker" data-marker={footwear.marker} />
+            {footwear.name}
+          </a>
+        </li>
+      </ol>
+      <ul role="list" class="drawer__links">
+        <li><a href={url('/products/')}>All products</a></li>
+        {links.map((l) => <li><a href={url(l.href)}>{l.label}</a></li>)}
+      </ul>
+    </nav>
+    <div class="drawer__foot">
+      <a class="btn" href={url('/enquiry/')}>Request a quote</a>
+      <p class="small">
+        <a href={`mailto:${company.email}`}>{company.email}</a><br />
+        <a href={company.phone.href}>{company.phone.display}</a>
+      </p>
+    </div>
+  </div>
+</header>
+
+<style>
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: var(--paper);
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .site-header__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--s-5);
+    height: var(--header-h);
+  }
+
+  .site-header__brand {
+    display: inline-flex;
+    text-decoration: none;
+  }
+
+  .primary-nav ul {
+    display: flex;
+    align-items: center;
+    gap: clamp(1rem, 2vw, 2.25rem);
+  }
+
+  .primary-nav__link {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    min-height: 2.75rem;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--ink);
+    font: 500 0.9375rem/1 var(--font-sans);
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+  .primary-nav__link svg {
+    width: 0.6rem;
+    transition: transform 200ms var(--ease);
+  }
+
+  .primary-nav__trigger[aria-expanded='true'] svg {
+    transform: rotate(180deg);
+  }
+
+  .primary-nav__link::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0.45rem;
+    height: 1px;
+    background: var(--ink);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 220ms var(--ease);
+  }
+
+  .primary-nav__link:hover::after,
+  .primary-nav__link[aria-current]::after,
+  .primary-nav__trigger[aria-expanded='true']::after {
+    transform: scaleX(1);
+  }
+
+  .primary-nav__link[aria-current]::after {
+    height: 2px;
+  }
+
+  .site-header__actions {
+    display: flex;
+    align-items: center;
+    gap: var(--s-3);
+  }
+
+  .site-header__quote-short {
+    display: none;
+  }
+
+  .quote-count {
+    display: inline-grid;
+    place-items: center;
+    min-width: 1.35rem;
+    height: 1.35rem;
+    padding: 0 0.3rem;
+    border-radius: 999px;
+    background: var(--paper);
+    color: var(--ink);
+    font: 600 0.75rem/1 var(--font-mono);
+  }
+
+  .quote-count[hidden] {
+    display: none;
+  }
+
+  .menu-toggle {
+    display: none;
+    align-items: center;
+    gap: 0.5rem;
+    min-height: 2.75rem;
+    padding: 0 0.25rem;
+    border: 0;
+    background: none;
+    color: var(--ink);
+    font: 600 0.875rem/1 var(--font-sans);
+    cursor: pointer;
+  }
+
+  .menu-toggle__bars {
+    display: grid;
+    gap: 5px;
+    width: 1.25rem;
+  }
+
+  .menu-toggle__bars span {
+    display: block;
+    height: 1.5px;
+    background: currentColor;
+  }
+
+  .menu-toggle__x {
+    position: relative;
+    width: 1.1rem;
+    height: 1.1rem;
+  }
+
+  .menu-toggle__x::before,
+  .menu-toggle__x::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 1.5px;
+    background: currentColor;
+    transform: rotate(45deg);
+  }
+
+  .menu-toggle__x::after {
+    transform: rotate(-45deg);
+  }
+
+  /* Products panel */
+  .products-panel {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 100%;
+    background: var(--paper);
+    border-top: 1px solid var(--rule);
+    border-bottom: 1px solid var(--ink);
+  }
+
+  .products-panel__inner {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: var(--gutter);
+    padding-block: var(--s-6) var(--s-7);
+  }
+
+  .products-panel__list {
+    grid-column: 1 / span 7;
+    display: grid;
+    gap: var(--s-4);
+    align-content: start;
+  }
+
+  .products-panel__list ol {
+    border-top: 1px solid var(--ink);
+  }
+
+  .products-panel__list li a {
+    display: grid;
+    grid-template-columns: 2.25rem 0.5rem 1fr auto;
+    align-items: center;
+    gap: var(--s-4);
+    padding: 0.85rem 0;
+    border-bottom: 1px solid var(--rule);
+    color: var(--ink);
+    text-decoration: none;
+    transition: padding 200ms var(--ease), background-color 200ms var(--ease);
+  }
+
+  .products-panel__list li a:hover {
+    padding-left: var(--s-3);
+    background: var(--paper-deep);
+  }
+
+  .products-panel__num {
+    font-size: 0.8125rem;
+    color: var(--muted);
+  }
+
+  .products-panel__name {
+    font-family: var(--font-serif);
+    font-size: 1.375rem;
+    line-height: 1.2;
+  }
+
+  .products-panel__count {
+    font-size: 0.8125rem;
+    color: var(--muted);
+    padding-right: var(--s-3);
+  }
+
+  .products-panel__aside {
+    grid-column: 9 / span 4;
+    display: grid;
+    gap: var(--s-4);
+    align-content: start;
+    padding-left: var(--s-6);
+    border-left: 1px solid var(--rule);
+  }
+
+  .products-panel__aside .btn {
+    justify-self: start;
+  }
+
+  /* Mobile drawer */
+  .drawer {
+    position: fixed;
+    inset: 0;
+    z-index: 60;
+    display: flex;
+    flex-direction: column;
+    background: var(--paper);
+    overflow-y: auto;
+  }
+
+  .drawer[hidden] {
+    display: none;
+  }
+
+  .drawer__top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: var(--header-h);
+    padding-inline: var(--margin);
+    border-bottom: 1px solid var(--rule);
+    flex: none;
+  }
+
+  .drawer__top .menu-toggle {
+    display: inline-flex;
+  }
+
+  .drawer__body {
+    padding: var(--s-6) var(--margin) var(--s-5);
+    display: grid;
+    gap: var(--s-4);
+  }
+
+  .drawer__products {
+    border-top: 1px solid var(--ink);
+  }
+
+  .drawer__products a {
+    display: flex;
+    align-items: center;
+    gap: var(--s-3);
+    min-height: 3.25rem;
+    border-bottom: 1px solid var(--rule);
+    color: var(--ink);
+    font-family: var(--font-serif);
+    font-size: 1.375rem;
+    text-decoration: none;
+  }
+
+  .drawer__products .mono {
+    font-size: 0.8125rem;
+    color: var(--muted);
+    width: 1.75rem;
+  }
+
+  .drawer__links {
+    display: grid;
+    margin-top: var(--s-4);
+  }
+
+  .drawer__links a {
+    display: flex;
+    align-items: center;
+    min-height: 2.75rem;
+    color: var(--ink);
+    font-weight: 500;
+    text-decoration: none;
+  }
+
+  .drawer__foot {
+    margin-top: auto;
+    padding: var(--s-5) var(--margin) var(--s-6);
+    border-top: 1px solid var(--rule);
+    display: grid;
+    gap: var(--s-4);
+  }
+
+  .drawer__foot a:not(.btn) {
+    color: var(--ink);
+  }
+
+  @media (max-width: 1023px) {
+    .primary-nav {
+      display: none;
+    }
+    .menu-toggle {
+      display: inline-flex;
+    }
+  }
+
+  @media (max-width: 479px) {
+    .site-header__quote-full {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip: rect(0 0 0 0);
+      white-space: nowrap;
+    }
+    .site-header__quote-short {
+      display: inline;
+    }
+    .site-header__actions {
+      gap: var(--s-2);
+    }
+    .menu-toggle__label {
+      display: none;
+    }
+  }
+</style>

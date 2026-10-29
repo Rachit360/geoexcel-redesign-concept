@@ -1,0 +1,92 @@
+---
+import '@fontsource-variable/newsreader/opsz.css';
+import '@fontsource-variable/newsreader/opsz-italic.css';
+import '@fontsource-variable/inter/index.css';
+import '@fontsource/ibm-plex-mono/400.css';
+import '@fontsource/ibm-plex-mono/500.css';
+import '../styles/global.css';
+
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import ConceptBar from '../components/ConceptBar.astro';
+import { url } from '../lib/paths';
+
+interface Props {
+  title: string;
+  description: string;
+  /** Hide the default title suffix. */
+  bareTitle?: boolean;
+}
+
+const { title, description, bareTitle = false } = Astro.props;
+const fullTitle = bareTitle ? title : `${title} — Geo Excel`;
+const canonical = new URL(Astro.url.pathname, Astro.site);
+---
+
+<!doctype html>
+<html lang="en-GB">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <!-- Concept redesign: keep it out of search results so it is never mistaken for the official site. -->
+    <meta name="robots" content="noindex, nofollow" />
+    <meta name="theme-color" content="#f5f1e8" />
+    <link rel="icon" href={url('/favicon.svg')} type="image/svg+xml" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <ConceptBar />
+    <Header />
+    <main id="main" tabindex="-1">
+      <slot />
+    </main>
+    <Footer />
+    <div class="toast" role="status" aria-live="polite" data-toast></div>
+    <script>
+      import '../scripts/site';
+    </script>
+  </body>
+</html>
+
+<style is:global>
+  main:focus {
+    outline: none;
+  }
+
+  .toast {
+    position: fixed;
+    left: 50%;
+    bottom: var(--s-5);
+    z-index: 70;
+    transform: translate(-50%, 1rem);
+    max-width: calc(100vw - 2rem);
+    padding: 0.8rem 1.1rem;
+    background: var(--ink);
+    color: var(--paper);
+    font-size: 0.9rem;
+    font-weight: 500;
+    border-radius: var(--radius);
+    opacity: 0;
+    pointer-events: none;
+    transition:
+      opacity 200ms var(--ease),
+      transform 200ms var(--ease);
+  }
+
+  .toast.is-visible {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+
+  .toast a {
+    color: var(--paper);
+    pointer-events: auto;
+  }
+</style>

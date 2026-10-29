@@ -1,0 +1,179 @@
+---
+import Logo from './Logo.astro';
+import { categories, footwear } from '../data/catalogue';
+import { company, fullAddress, mapsHref } from '../data/company';
+import { url, categoryUrl } from '../lib/paths';
+
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer on-ink">
+  <div class="wrap">
+    <div class="site-footer__top">
+      <div class="site-footer__brand">
+        <Logo inverse />
+        <p>
+          Merchant exporter of Indian rice, whole spices, frozen foods, edible oils and ghee. Bengaluru, India.
+        </p>
+      </div>
+
+      <nav class="site-footer__nav" aria-label="Footer">
+        <div>
+          <p class="label">Products</p>
+          <ul role="list">
+            {
+              categories.map((c) => (
+                <li>
+                  <a href={categoryUrl(c.slug)}>
+                    <span class="mono">{c.number}</span> {c.shortName}
+                  </a>
+                </li>
+              ))
+            }
+            <li>
+              <a href={categoryUrl(footwear.slug)}><span class="mono">{footwear.number}</span> Leather footwear</a>
+            </li>
+          </ul>
+        </div>
+        <div>
+          <p class="label">Company</p>
+          <ul role="list">
+            <li><a href={url('/group/')}>The Group</a></li>
+            <li><a href={url('/how-we-work/')}>How we work</a></li>
+            <li><a href={url('/quality/')}>Quality and registrations</a></li>
+            <li><a href={url('/enquiry/')}>Request a quote</a></li>
+            <li><a href={url('/contact/')}>Contact</a></li>
+          </ul>
+        </div>
+        <div>
+          <p class="label">Contact</p>
+          <address>
+            {fullAddress.map((l) => <span>{l}</span>)}
+          </address>
+          <ul role="list" class="site-footer__contact">
+            <li><a href={`mailto:${company.email}`}>{company.email}</a></li>
+            <li><a href={company.phone.href}>{company.phone.display}</a></li>
+            <li><a href={mapsHref} rel="noopener" target="_blank">Open in Google Maps<span class="visually-hidden"> (opens in a new tab)</span></a></li>
+          </ul>
+        </div>
+      </nav>
+    </div>
+
+    <div class="site-footer__legal">
+      <p class="mono">
+        {company.legalName} · IEC AAKCG8371P · APEDA RCMC/APEDA/04107/2023-2024
+      </p>
+      <p class="site-footer__meta">
+        <span>© {year} {company.legalName}</span>
+        <a href={url('/about-this-redesign/')}>About this concept redesign</a>
+      </p>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    background: var(--ink);
+    color: var(--on-ink-muted);
+    padding-block: var(--s-9) var(--s-6);
+    font-size: 0.9375rem;
+    border-top: 1px solid rgba(245, 241, 232, 0.14);
+  }
+
+  .site-footer a {
+    color: var(--paper);
+    text-decoration: none;
+  }
+
+  .site-footer a:hover {
+    text-decoration: underline;
+    text-underline-offset: 0.25em;
+  }
+
+  .site-footer .label {
+    color: var(--on-ink-muted);
+    margin-bottom: var(--s-4);
+  }
+
+  .site-footer__top {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: var(--gutter);
+    row-gap: var(--s-7);
+    padding-bottom: var(--s-8);
+  }
+
+  .site-footer__brand {
+    grid-column: 1 / span 4;
+    display: grid;
+    gap: var(--s-5);
+    align-content: start;
+  }
+
+  .site-footer__brand p {
+    max-width: 24rem;
+    color: var(--on-ink-muted);
+  }
+
+  .site-footer__nav {
+    grid-column: 6 / span 7;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1.3fr;
+    gap: var(--gutter);
+  }
+
+  .site-footer__nav ul {
+    display: grid;
+    gap: 0.55rem;
+  }
+
+  .site-footer__nav .mono {
+    font-size: 0.75rem;
+    color: var(--on-ink-muted);
+    margin-right: 0.35rem;
+  }
+
+  address {
+    display: grid;
+    font-style: normal;
+    line-height: 1.55;
+    margin-bottom: var(--s-4);
+  }
+
+  .site-footer__legal {
+    display: grid;
+    gap: var(--s-3);
+    padding-top: var(--s-5);
+    border-top: 1px solid rgba(245, 241, 232, 0.18);
+    font-size: 0.8125rem;
+  }
+
+  .site-footer__legal .mono {
+    font-size: 0.75rem;
+    color: var(--on-ink-muted);
+  }
+
+  .site-footer__meta {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: var(--s-3);
+  }
+
+  @media (max-width: 1023px) {
+    .site-footer__brand,
+    .site-footer__nav {
+      grid-column: 1 / -1;
+    }
+  }
+
+  @media (max-width: 639px) {
+    .site-footer__nav {
+      grid-template-columns: 1fr 1fr;
+      row-gap: var(--s-7);
+    }
+    .site-footer__nav > :last-child {
+      grid-column: 1 / -1;
+    }
+  }
+</style>

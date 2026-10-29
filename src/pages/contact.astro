@@ -1,0 +1,147 @@
+---
+import { Picture } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import PageIntro from '../components/PageIntro.astro';
+import { company, fullAddress, mapsHref } from '../data/company';
+import { url } from '../lib/paths';
+import { photo } from '../lib/images';
+---
+
+<Base
+  title="Contact"
+  description="Contact Geo Excel in Bengaluru: address, telephone and email, or send a structured quotation request."
+>
+  <PageIntro
+    crumbs={[{ label: 'Contact' }]}
+    label="Contact"
+    title="Bengaluru, India."
+    lede="For prices and availability, a structured enquiry is the quickest route to an accurate quotation. For anything else, write or call."
+  />
+
+  <section class="section">
+    <div class="wrap grid contact">
+      <div class="contact__details">
+        <dl class="contact__list">
+          <div>
+            <dt class="label">Email</dt>
+            <dd><a class="contact__big" href={`mailto:${company.email}`}>{company.email}</a></dd>
+          </div>
+          <div>
+            <dt class="label">Telephone</dt>
+            <dd><a class="contact__big" href={company.phone.href}>{company.phone.display}</a></dd>
+          </div>
+          <div>
+            <dt class="label">Registered office</dt>
+            <dd>
+              <address>
+                <strong>{company.legalName}</strong>
+                {fullAddress.map((l) => <span>{l}</span>)}
+              </address>
+              <a class="link link--arrow" href={mapsHref} rel="noopener" target="_blank">
+                Open in Google Maps<span class="visually-hidden"> (opens in a new tab)</span>
+              </a>
+            </dd>
+          </div>
+        </dl>
+      </div>
+
+      <div class="contact__aside">
+        <figure class="figure">
+          <div class="ratio ratio--4x5">
+            <Picture src={photo('ghee-jar')} formats={['avif', 'webp']} widths={[480, 735]} sizes="(min-width: 900px) 30vw, 100vw" alt="A jar of ghee with a spoon" />
+          </div>
+          <figcaption><span class="mono">Fig. 01</span> Ghee.</figcaption>
+        </figure>
+        <div class="contact__cta">
+          <h2>Requesting a price?</h2>
+          <p>Send products, quantities, packing and destination port in one message.</p>
+          <a class="btn" href={url('/enquiry/')}>Request a quote</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .contact {
+    row-gap: var(--s-8);
+    align-items: start;
+  }
+
+  .contact__details {
+    grid-column: 1 / span 7;
+  }
+
+  .contact__list {
+    border-top: 1px solid var(--ink);
+  }
+
+  .contact__list > div {
+    display: grid;
+    grid-template-columns: 11rem minmax(0, 1fr);
+    gap: var(--s-5);
+    padding: var(--s-6) 0;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .contact__big {
+    font-family: var(--font-serif);
+    font-size: clamp(1.5rem, 1.2rem + 1.2vw, 2.25rem);
+    line-height: 1.15;
+    color: var(--ink);
+    text-decoration: none;
+    word-break: break-word;
+  }
+
+  .contact__big:hover {
+    text-decoration: underline;
+    text-underline-offset: 0.15em;
+    text-decoration-thickness: 1px;
+  }
+
+  address {
+    display: grid;
+    font-style: normal;
+    line-height: 1.6;
+    margin-bottom: var(--s-4);
+  }
+
+  .contact__aside {
+    grid-column: 9 / span 4;
+    display: grid;
+    gap: var(--s-6);
+  }
+
+  .contact__cta {
+    display: grid;
+    gap: var(--s-4);
+    padding: var(--s-5);
+    background: var(--paper-deep);
+    border-top: 2px solid var(--ink);
+  }
+
+  .contact__cta h2 {
+    font-size: var(--step-h3);
+  }
+
+  .contact__cta .btn {
+    justify-self: start;
+  }
+
+  @media (max-width: 899px) {
+    .contact__details,
+    .contact__aside {
+      grid-column: 1 / -1;
+    }
+    .contact__aside figure {
+      max-width: 22rem;
+    }
+  }
+
+  @media (max-width: 539px) {
+    .contact__list > div {
+      grid-template-columns: 1fr;
+      gap: var(--s-2);
+    }
+  }
+</style>

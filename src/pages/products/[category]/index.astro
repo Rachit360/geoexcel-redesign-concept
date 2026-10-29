@@ -1,0 +1,242 @@
+---
+import { Picture } from 'astro:assets';
+import Base from '../../../layouts/Base.astro';
+import Breadcrumbs from '../../../components/Breadcrumbs.astro';
+import ProductTable from '../../../components/ProductTable.astro';
+import EnquiryBand from '../../../components/EnquiryBand.astro';
+import { categories, type Category } from '../../../data/catalogue';
+import { url, categoryUrl } from '../../../lib/paths';
+import { photo } from '../../../lib/images';
+
+export function getStaticPaths() {
+  return categories.map((category) => ({ params: { category: category.slug }, props: { category } }));
+}
+
+interface Props {
+  category: Category;
+}
+const { category } = Astro.props;
+
+const origins = [...new Set(category.products.map((p) => p.origin).filter(Boolean))] as string[];
+const others = categories.filter((c) => c.slug !== category.slug);
+---
+
+<Base
+  title={category.name}
+  description={`${category.name} from Geo Excel: ${category.lede} Compare ${category.products.length} product sheets with origin, key parameters, pack sizes and HS codes.`}
+>
+  <section class="cat-hero">
+    <div class="wrap">
+      <Breadcrumbs items={[{ label: 'Products', href: url('/products/') }, { label: category.name }]} />
+      <div class="cat-hero__grid">
+        <div class="cat-hero__text">
+          <p class="cat-hero__code">
+            <span class="marker" data-marker={category.marker}></span>
+            <span class="mono">{category.number}</span>
+            <span class="label">Category</span>
+          </p>
+          <h1>{category.name}</h1>
+          <p class="lead">{category.intro}</p>
+          <dl class="cat-facts">
+            <div>
+              <dt class="label">Products</dt>
+              <dd class="mono">{category.products.length}</dd>
+            </div>
+            {
+              origins.length > 0 && (
+                <div>
+                  <dt class="label">Origins listed</dt>
+                  <dd>{origins.length > 4 ? `${origins.slice(0, 4).join('; ')}; and more` : origins.join('; ')}</dd>
+                </div>
+              )
+            }
+            {
+              category.common?.map((c) => (
+                <div>
+                  <dt class="label">{c.label}</dt>
+                  <dd>{c.value}</dd>
+                </div>
+              ))
+            }
+          </dl>
+          <div class="btn-row">
+            <a class="btn" href="#compare">Compare products</a>
+            <a class="btn btn--secondary" href={url('/enquiry/')}>Request a quote</a>
+          </div>
+        </div>
+        <figure class="cat-hero__figure figure">
+          <div class="ratio ratio--4x5">
+            <Picture
+              src={photo(category.photo)}
+              formats={['avif', 'webp']}
+              widths={[480, 720, 960]}
+              sizes="(min-width: 900px) 38vw, 100vw"
+              alt={category.photoAlt}
+              loading="eager"
+              fetchpriority="high"
+            />
+          </div>
+          <figcaption><span class="mono">Fig. {category.number}</span> {category.photoAlt}.</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="compare" aria-labelledby="compare-title">
+    <div class="wrap">
+      <div class="heading heading--split">
+        <div class="flow" style="--flow: 1rem">
+          <p class="label">Compare</p>
+          <h2 id="compare-title">{category.shortName}: all {category.products.length} product sheets</h2>
+        </div>
+        <p class="lead">
+          Key parameters at a glance. Open a product for the full sheet, or add it straight to your quote list.
+        </p>
+      </div>
+      <ProductTable category={category} caption={`${category.name}: products, origin, key parameters, pack sizes and HS codes`} />
+      <p class="small muted cat-note">
+        Values are typical figures published by Geo Excel. The specification for each order is agreed in the quotation.
+      </p>
+    </div>
+  </section>
+
+  <section class="section section--tight section--deep" aria-labelledby="others-title">
+    <div class="wrap">
+      <h2 id="others-title" class="others-title">Other categories</h2>
+      <ul class="others" role="list">
+        {
+          others.map((c) => (
+            <li>
+              <a href={categoryUrl(c.slug)}>
+                <span class="mono">{c.number}</span>
+                <span class="marker" data-marker={c.marker} />
+                <span class="others__name">{c.name}</span>
+                <span class="others__count mono">{c.products.length}</span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <EnquiryBand />
+</Base>
+
+<style>
+  .cat-hero {
+    padding-block: var(--s-6) var(--s-8);
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .cat-hero__grid {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: var(--gutter);
+    row-gap: var(--s-7);
+    margin-top: var(--s-7);
+    align-items: end;
+  }
+
+  .cat-hero__text {
+    grid-column: 1 / span 6;
+    display: grid;
+    gap: var(--s-5);
+  }
+
+  .cat-hero__code {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+
+  .cat-hero__code .mono {
+    font-size: 0.875rem;
+    color: var(--ink);
+  }
+
+  .cat-facts {
+    display: grid;
+    border-top: 1px solid var(--ink);
+  }
+
+  .cat-facts > div {
+    display: grid;
+    grid-template-columns: 10rem minmax(0, 1fr);
+    gap: var(--s-4);
+    padding: 0.75rem 0;
+    border-bottom: 1px solid var(--rule);
+    align-items: baseline;
+  }
+
+  .cat-facts dd {
+    color: var(--ink);
+    font-size: 0.9375rem;
+  }
+
+  .cat-hero__figure {
+    grid-column: 8 / span 5;
+  }
+
+  .cat-note {
+    margin-top: var(--s-4);
+  }
+
+  .others-title {
+    font-size: var(--step-h3);
+    margin-bottom: var(--s-5);
+  }
+
+  .others {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0 var(--gutter);
+  }
+
+  .others a {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: var(--s-4) 0;
+    border-top: 1px solid var(--ink);
+    color: var(--ink);
+    text-decoration: none;
+  }
+
+  .others a:hover .others__name {
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+    text-decoration-thickness: 1px;
+  }
+
+  .others .mono {
+    font-size: 0.8125rem;
+    color: var(--muted);
+  }
+
+  .others__name {
+    font-family: var(--font-serif);
+    font-size: 1.375rem;
+    flex: 1;
+  }
+
+  @media (max-width: 899px) {
+    .cat-hero__text,
+    .cat-hero__figure {
+      grid-column: 1 / -1;
+    }
+    .cat-hero__figure {
+      max-width: 30rem;
+    }
+    .others {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 479px) {
+    .cat-facts > div {
+      grid-template-columns: 1fr;
+      gap: 0.2rem;
+    }
+  }
+</style>

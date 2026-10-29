@@ -1,0 +1,95 @@
+---
+import { company } from '../data/company';
+import { url } from '../lib/paths';
+
+interface Props {
+  title?: string;
+}
+const { title = 'Tell us the product, grade, quantity and destination port.' } = Astro.props;
+---
+
+<section class="section section--ink enquiry-band on-ink" aria-labelledby="enquiry-band-title">
+  <div class="wrap grid">
+    <div class="enquiry-band__main">
+      <p class="label">Request a quote</p>
+      <h2 id="enquiry-band-title">{title}</h2>
+      <p class="lead">
+        Build a quote list from the product sheets, add your shipment details, and send it in one message.
+      </p>
+      <div class="btn-row">
+        <a class="btn btn--on-ink" href={url('/enquiry/')}>Request a quote</a>
+        <a class="btn btn--ghost-on-ink" href={url('/products/')}>Browse products</a>
+      </div>
+    </div>
+    <dl class="enquiry-band__contact">
+      <div>
+        <dt class="label">Email</dt>
+        <dd><a class="mono" href={`mailto:${company.email}`}>{company.email}</a></dd>
+      </div>
+      <div>
+        <dt class="label">Telephone</dt>
+        <dd><a class="mono" href={company.phone.href}>{company.phone.display}</a></dd>
+      </div>
+      <div>
+        <dt class="label">Office</dt>
+        <dd>HRBR Layout, Kalyan Nagar<br />Bengaluru 560043, India</dd>
+      </div>
+    </dl>
+  </div>
+</section>
+
+<style>
+  .enquiry-band__main {
+    grid-column: 1 / span 7;
+    display: grid;
+    gap: var(--s-5);
+    align-content: start;
+  }
+
+  .enquiry-band__main h2 {
+    max-width: 16em;
+  }
+
+  .enquiry-band__main .btn-row {
+    margin-top: var(--s-3);
+  }
+
+  .enquiry-band__contact {
+    grid-column: 9 / span 4;
+    display: grid;
+    align-content: end;
+    gap: var(--s-5);
+    padding-left: var(--s-6);
+    border-left: 1px solid rgba(245, 241, 232, 0.2);
+  }
+
+  .enquiry-band__contact dd {
+    margin-top: 0.35rem;
+    color: var(--paper);
+  }
+
+  .enquiry-band__contact a {
+    color: var(--paper);
+    text-decoration: none;
+    font-size: 0.9375rem;
+  }
+
+  .enquiry-band__contact a:hover {
+    text-decoration: underline;
+    text-underline-offset: 0.25em;
+  }
+
+  @media (max-width: 899px) {
+    .enquiry-band__main,
+    .enquiry-band__contact {
+      grid-column: 1 / -1;
+    }
+    .enquiry-band__contact {
+      margin-top: var(--s-7);
+      padding-left: 0;
+      padding-top: var(--s-6);
+      border-left: 0;
+      border-top: 1px solid rgba(245, 241, 232, 0.2);
+    }
+  }
+</style>

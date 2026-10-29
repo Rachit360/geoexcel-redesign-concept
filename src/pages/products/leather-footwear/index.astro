@@ -1,0 +1,129 @@
+---
+import { Picture } from 'astro:assets';
+import Base from '../../../layouts/Base.astro';
+import Breadcrumbs from '../../../components/Breadcrumbs.astro';
+import EnquiryBand from '../../../components/EnquiryBand.astro';
+import { footwear } from '../../../data/catalogue';
+import { url } from '../../../lib/paths';
+import { photo } from '../../../lib/images';
+
+const gallery = [
+  { img: 'shoe-brown-oxford', alt: 'Brown leather oxford shoes', ratio: '3x2', span: 'wide' },
+  { img: 'shoe-sole', alt: 'Leather sole of a formal shoe', ratio: '4x5', span: 'narrow' },
+  { img: 'shoe-black-pair', alt: 'Pair of black leather lace-up shoes', ratio: '4x5', span: 'narrow' },
+  { img: 'shoe-brogue', alt: 'Tan leather brogues', ratio: '3x2', span: 'wide' },
+];
+---
+
+<Base
+  title="Leather footwear"
+  description="Geo Excel lists fashion and lifestyle goods, including leather footwear, among its export lines. The current range is shared on request."
+>
+  <section class="fw-hero">
+    <div class="wrap">
+      <Breadcrumbs items={[{ label: 'Products', href: url('/products/') }, { label: footwear.name }]} />
+      <div class="fw-hero__grid">
+        <div class="fw-hero__text">
+          <p class="fw-code">
+            <span class="marker" data-marker="ink"></span>
+            <span class="mono">{footwear.number}</span>
+            <span class="label">Fashion and lifestyle</span>
+          </p>
+          <h1>Leather footwear</h1>
+          <p class="lead">
+            Alongside its food categories, Geo Excel lists fashion and lifestyle goods — including leather footwear —
+            among its export lines.
+          </p>
+          <p>
+            Styles, materials, size runs and minimum quantities are not published as product sheets. Tell us the style,
+            quantity and market you are buying for, and the current range will be shared with you directly.
+          </p>
+          <div class="btn-row">
+            <a class="btn" href={url('/enquiry/?line=leather-footwear')}>Ask for the current range</a>
+            <a class="btn btn--secondary" href={url('/contact/')}>Contact</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-label="Photographs">
+    <div class="wrap fw-gallery">
+      {
+        gallery.map((g, i) => (
+          <figure class:list={['figure', `fw-gallery__item fw-gallery__item--${g.span}`]} data-reveal>
+            <div class:list={['ratio', `ratio--${g.ratio}`]}>
+              <Picture src={photo(g.img)} formats={['avif', 'webp']} widths={[600, 1000, 1400]} sizes="(min-width: 900px) 55vw, 100vw" alt={g.alt} />
+            </div>
+            <figcaption>
+              <span class="mono">Fig. 05.{String(i + 1).padStart(2, '0')}</span> {g.alt}. Illustrative photograph.
+            </figcaption>
+          </figure>
+        ))
+      }
+    </div>
+  </section>
+
+  <EnquiryBand title="Buying leather footwear? Tell us the style, quantity and market." />
+</Base>
+
+<style>
+  .fw-hero {
+    padding-block: var(--s-6) var(--s-6);
+  }
+
+  .fw-hero__grid {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: var(--gutter);
+    margin-top: var(--s-8);
+  }
+
+  .fw-hero__text {
+    grid-column: 1 / span 7;
+    display: grid;
+    gap: var(--s-5);
+  }
+
+  .fw-hero__text > p:not(.lead):not(.fw-code) {
+    max-width: var(--measure);
+  }
+
+  .fw-code {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+
+  .fw-gallery {
+    display: grid;
+    grid-template-columns: 7fr 5fr;
+    gap: var(--s-7) var(--gutter);
+    align-items: start;
+  }
+
+  .fw-gallery__item:nth-child(2) {
+    margin-top: var(--s-9);
+  }
+
+  .fw-gallery__item:nth-child(3) {
+    grid-column: 1;
+    width: 72%;
+    justify-self: end;
+  }
+
+  @media (max-width: 899px) {
+    .fw-hero__text {
+      grid-column: 1 / -1;
+    }
+    .fw-gallery {
+      grid-template-columns: 1fr;
+    }
+    .fw-gallery__item:nth-child(2) {
+      margin-top: 0;
+    }
+    .fw-gallery__item:nth-child(3) {
+      width: 100%;
+    }
+  }
+</style>

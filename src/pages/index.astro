@@ -1,0 +1,578 @@
+---
+import { Picture } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import CategoryIndex from '../components/CategoryIndex.astro';
+import SpecSheet from '../components/SpecSheet.astro';
+import AddToQuote from '../components/AddToQuote.astro';
+import Register from '../components/Register.astro';
+import EnquiryBand from '../components/EnquiryBand.astro';
+import { categories, findProduct, productCount } from '../data/catalogue';
+import { heritage } from '../data/company';
+import { publicRegister } from '../data/registrations';
+import { url, productUrl, categoryUrl } from '../lib/paths';
+import { photo, productImage } from '../lib/images';
+
+const featured = findProduct('rice', '1121-basmati-steam')!;
+const rice = categories.find((c) => c.slug === 'rice')!;
+
+const steps = [
+  {
+    title: 'Build a quote list',
+    text: 'Add products from their sheets as you browse. The list stays in your browser until you choose to send it.',
+  },
+  {
+    title: 'Send your requirement',
+    text: 'Quantity, packing, destination port and Incoterm for every line, in a single structured message.',
+  },
+  {
+    title: 'Receive a quotation',
+    text: 'The quotation sets out the grade, packing, terms and price Geo Excel can offer for each line.',
+  },
+  {
+    title: 'Contract and shipment',
+    text: 'The agreed specification and the documents your market requires are fixed in the contract before dispatch.',
+  },
+];
+
+const ranges = [
+  { cat: 'frozen-foods', img: 'frozen-peas-macro', alt: 'Frozen green peas with frost', caption: 'Frozen foods — IQF green peas', ratio: '4x5' },
+  { cat: 'edible-oils-ghee', img: 'olive-oil-pour', alt: 'Olive oil being poured into a glass bowl', caption: 'Edible oils — olive oil', ratio: '3x2' },
+  { cat: 'spices', img: 'cloves-macro', alt: 'A pile of whole cloves', caption: 'Whole spices — cloves', ratio: '4x5' },
+];
+---
+
+<Base
+  title="Geo Excel — Indian rice, spices, frozen foods and edible oils for export"
+  bareTitle
+  description="Geo Excel is a Bengaluru merchant exporter of rice, whole spices, IQF frozen foods, edible oils and ghee. Product sheets with origin, grade, packing and HS codes, and a structured quotation request."
+>
+  <!-- 1. Hero ------------------------------------------------------------ -->
+  <section class="hero">
+    <div class="wrap hero__grid">
+      <div class="hero__text">
+        <p class="label">Geo Excel Group · Bengaluru, India</p>
+        <h1>Indian rice, spices, frozen foods and edible oils, specified for export.</h1>
+        <p class="lead">
+          Geo Excel is a Bengaluru merchant exporter registered with APEDA. Every product has its own sheet — origin,
+          grade, packing and HS code — so an enquiry can start from a specification.
+        </p>
+        <div class="btn-row">
+          <a class="btn" href={url('/enquiry/')}>Request a quote</a>
+          <a class="btn btn--secondary" href={url('/products/')}>Browse {productCount} product sheets</a>
+        </div>
+        <ul class="hero__creds mono" role="list" aria-label="Registrations">
+          {publicRegister.map((r) => <li>{r.issuerShort} · {r.id === 'iec' ? `IEC ${r.number}` : r.id === 'udyam' ? 'Udyam registered' : 'RCMC'}</li>)}
+        </ul>
+      </div>
+
+      <figure class="hero__figure figure">
+        <div class="ratio ratio--4x5">
+          <Picture
+            src={photo('hero-rice-spoon')}
+            formats={['avif', 'webp']}
+            widths={[480, 720, 960, 1280]}
+            sizes="(min-width: 900px) 40vw, 100vw"
+            alt="Long-grain white rice heaped around a wooden spoon"
+            loading="eager"
+            fetchpriority="high"
+          />
+        </div>
+        <figcaption><span class="mono">Fig. 01</span> Long-grain white rice.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- 2. Product index --------------------------------------------------- -->
+  <section class="section" aria-labelledby="export-title">
+    <div class="wrap">
+      <div class="heading heading--split">
+        <div class="flow" style="--flow: 1rem">
+          <p class="label">The range</p>
+          <h2 id="export-title">What we export</h2>
+        </div>
+        <p class="lead">
+          Four food categories and a leather footwear line, numbered the same way across the site, from the menu to the
+          quote list.
+        </p>
+      </div>
+      <CategoryIndex />
+    </div>
+  </section>
+
+  <!-- 3. Full-width image moment + statement ----------------------------- -->
+  <section class="band" aria-labelledby="sheet-first-title">
+    <figure class="band__figure figure">
+      <div class="band__img">
+        <Picture
+          src={photo('band-spice-bowls')}
+          formats={['avif', 'webp']}
+          widths={[800, 1280, 1920, 2400]}
+          sizes="100vw"
+          alt="Bowls of whole and ground spices arranged in rows, seen from above"
+        />
+      </div>
+      <figcaption class="wrap"><span class="mono">Fig. 02</span> Whole and ground spices.</figcaption>
+    </figure>
+    <div class="wrap grid band__text" data-reveal>
+      <div class="band__heading">
+        <p class="label">Specification first</p>
+        <h2 id="sheet-first-title">Every product has a sheet before you ask for a price.</h2>
+      </div>
+      <div class="band__body flow">
+        <p class="lead">
+          International buyers compare suppliers on grade, origin and packing long before price. Each sheet sets these
+          out in the same order, with the HS code your customs broker will ask for.
+        </p>
+        <p>
+          Add the products you need to a quote list, then send quantities, packing and destination port together —
+          instead of a series of emails to establish what is available.
+        </p>
+        <p><a class="link link--arrow" href={url('/how-we-work/')}>How an enquiry works</a></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. Featured product sheet ------------------------------------------ -->
+  <section class="section section--deep" aria-labelledby="featured-title">
+    <div class="wrap grid featured">
+      <div class="featured__media" data-reveal>
+        <figure class="figure">
+          <div class="ratio ratio--4x5">
+            <Picture
+              src={productImage(featured.image)}
+              formats={['avif', 'webp']}
+              widths={[400, 600, 800]}
+              sizes="(min-width: 900px) 34vw, 100vw"
+              alt={`${featured.name} rice grains`}
+            />
+          </div>
+          <figcaption><span class="mono">Fig. 03</span> {featured.name}.</figcaption>
+        </figure>
+      </div>
+      <div class="featured__body">
+        <p class="label">Featured product sheet</p>
+        <h2 id="featured-title">{featured.name}</h2>
+        <p class="lead">{featured.summary}</p>
+        <SpecSheet product={featured} category={rice} headingLevel="h3" />
+        <div class="btn-row">
+          <AddToQuote product={featured} category={rice} variant="primary" />
+          <a class="btn btn--secondary" href={productUrl('rice', featured.slug)}>Open full sheet</a>
+        </div>
+        <p><a class="link link--arrow" href={categoryUrl('rice')}>Compare all {rice.products.length} rice grades</a></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. Image triptych ------------------------------------------------- -->
+  <section class="section" aria-labelledby="range-title">
+    <div class="wrap">
+      <div class="heading heading--split">
+        <div class="flow" style="--flow: 1rem">
+          <p class="label">Across the range</p>
+          <h2 id="range-title">From basmati to ghee</h2>
+        </div>
+        <p class="lead">
+          Basmati and South Indian rice, Kerala spices, IQF vegetables and potato products, cold-pressed oils and ghee.
+        </p>
+      </div>
+      <div class="triptych">
+        {
+          ranges.map((r, i) => {
+            const c = categories.find((x) => x.slug === r.cat)!;
+            return (
+              <a class:list={['triptych__item', `triptych__item--${i + 1}`]} href={categoryUrl(c.slug)} data-reveal>
+                <figure class="figure">
+                  <div class:list={['ratio', `ratio--${r.ratio}`]}>
+                    <Picture src={photo(r.img)} formats={['avif', 'webp']} widths={[480, 800, 1200]} sizes="(min-width: 900px) 33vw, 100vw" alt={r.alt} />
+                  </div>
+                  <figcaption>
+                    <span class="mono">{c.number}</span>
+                    <span>
+                      <span class="triptych__name">{c.name}</span>
+                      <span class="triptych__cap">{c.products.length} product sheets →</span>
+                    </span>
+                  </figcaption>
+                </figure>
+              </a>
+            );
+          })
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. How we work ----------------------------------------------------- -->
+  <section class="section section--tight how" aria-labelledby="how-title">
+    <div class="wrap grid">
+      <div class="how__intro">
+        <p class="label">How we work</p>
+        <h2 id="how-title">From quote list to contract, in four steps.</h2>
+        <p class="lead">One structured enquiry replaces the usual back-and-forth about what is available.</p>
+        <figure class="figure how__figure">
+          <div class="ratio ratio--3x2">
+            <Picture src={photo('sesame-spoons')} formats={['avif', 'webp']} widths={[480, 800]} sizes="(min-width: 900px) 35vw, 100vw" alt="White and black sesame seeds in wooden spoons" />
+          </div>
+          <figcaption><span class="mono">Fig. 04</span> White and black sesame seeds.</figcaption>
+        </figure>
+      </div>
+      <ol class="steps" role="list">
+        {
+          steps.map((s, i) => (
+            <li class="steps__item" data-reveal>
+              <span class="steps__num numeral">{String(i + 1).padStart(2, '0')}</span>
+              <div>
+                <h3>{s.title}</h3>
+                <p>{s.text}</p>
+              </div>
+            </li>
+          ))
+        }
+        <li class="steps__more"><a class="link link--arrow" href={url('/how-we-work/')}>Incoterms, packing and what to include</a></li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- 7. Quality register ------------------------------------------------ -->
+  <section class="section section--deep" aria-labelledby="register-title">
+    <div class="wrap">
+      <div class="heading heading--split">
+        <div class="flow" style="--flow: 1rem">
+          <p class="label">Quality and registrations</p>
+          <h2 id="register-title">The register</h2>
+        </div>
+        <p class="lead">
+          The trade registrations behind every shipment, with numbers you can check. Status is calculated from each
+          document’s validity date.
+        </p>
+      </div>
+      <Register />
+      <p class="register-note small muted">
+        Copies are available with your quotation. <a class="link link--arrow" href={url('/quality/')}>Quality and documents</a>
+      </p>
+    </div>
+  </section>
+
+  <!-- 8. Heritage -------------------------------------------------------- -->
+  <section class="section heritage" aria-labelledby="heritage-title">
+    <div class="wrap grid">
+      <div class="heritage__intro">
+        <p class="label">The Group</p>
+        <h2 id="heritage-title">Rooted in farming since the 1980s.</h2>
+        <p class="lead">
+          Geo Excel — short for Geographic Excellence — is the export business of a family group that began by growing
+          rice, sugarcane and sesame.
+        </p>
+        <p><a class="link link--arrow" href={url('/group/')}>About the Group</a></p>
+      </div>
+      <ol class="ledger" role="list">
+        {
+          heritage.map((h) => (
+            <li class="ledger__row" data-reveal>
+              <span class="ledger__year numeral">{h.year}</span>
+              <div>
+                <h3 class="ledger__title">{h.title}</h3>
+                <p>{h.text}</p>
+              </div>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  <EnquiryBand />
+</Base>
+
+<style>
+  /* Hero ---------------------------------------------------------------- */
+  .hero {
+    padding-block: var(--s-6) var(--s-9);
+  }
+
+  .hero__grid {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: var(--gutter);
+    row-gap: var(--s-7);
+    align-items: end;
+  }
+
+  .hero__text {
+    grid-column: 1 / span 6;
+    display: grid;
+    gap: var(--s-5);
+    padding-bottom: var(--s-6);
+  }
+
+  .hero__text h1 {
+    max-width: 12.5em;
+  }
+
+  .hero__text .btn-row {
+    margin-top: var(--s-2);
+  }
+
+  .hero__creds {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem 0;
+    margin-top: var(--s-4);
+    padding-top: var(--s-4);
+    border-top: 1px solid var(--rule);
+    font-size: 0.75rem;
+    color: var(--muted);
+  }
+
+  .hero__creds li:not(:last-child)::after {
+    content: '';
+    display: inline-block;
+    width: 1px;
+    height: 0.8em;
+    margin-inline: 0.85rem;
+    background: var(--rule);
+    vertical-align: middle;
+  }
+
+  .hero__figure {
+    grid-column: 8 / span 5;
+  }
+
+  /* Band ---------------------------------------------------------------- */
+  .band {
+    padding-bottom: var(--section);
+  }
+
+  .band__img {
+    height: clamp(18rem, 42vw, 40rem);
+    overflow: hidden;
+    background: var(--paper-sunk);
+  }
+
+  .band__img :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 50% 45%;
+  }
+
+  .band__figure figcaption {
+    margin-top: var(--s-3);
+  }
+
+  .band__text {
+    margin-top: var(--s-8);
+    row-gap: var(--s-5);
+  }
+
+  .band__heading {
+    grid-column: 1 / span 6;
+    display: grid;
+    gap: var(--s-4);
+    align-content: start;
+  }
+
+  .band__body {
+    grid-column: 8 / span 5;
+    --flow: 1.1rem;
+  }
+
+  /* Featured ------------------------------------------------------------ */
+  .featured {
+    row-gap: var(--s-7);
+    align-items: start;
+  }
+
+  .featured__media {
+    grid-column: 1 / span 5;
+    position: sticky;
+    top: calc(var(--header-h) + var(--s-5));
+  }
+
+  .featured__body {
+    grid-column: 7 / span 6;
+    display: grid;
+    gap: var(--s-5);
+  }
+
+  .featured__body .btn-row {
+    margin-top: var(--s-2);
+  }
+
+  /* Triptych ------------------------------------------------------------ */
+  .triptych {
+    display: grid;
+    grid-template-columns: 5fr 6fr 4fr;
+    gap: var(--gutter);
+    align-items: start;
+  }
+
+  .triptych__item {
+    display: block;
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .triptych__item--2 {
+    margin-top: var(--s-9);
+  }
+
+  .triptych__item--3 {
+    margin-top: var(--s-6);
+  }
+
+  .triptych__item :global(img) {
+    transition: transform 600ms var(--ease);
+  }
+
+  .triptych__item:hover :global(img) {
+    transform: scale(1.03);
+  }
+
+  .triptych__name {
+    display: block;
+    font-family: var(--font-serif);
+    font-size: 1.25rem;
+    color: var(--ink);
+  }
+
+  .triptych__cap {
+    display: block;
+    margin-top: 0.15rem;
+  }
+
+  /* How ----------------------------------------------------------------- */
+  .how .grid {
+    row-gap: var(--s-7);
+  }
+
+  .how__intro {
+    grid-column: 1 / span 5;
+    display: grid;
+    gap: var(--s-5);
+    align-content: start;
+  }
+
+  .how__figure {
+    margin-top: var(--s-4);
+  }
+
+  .steps {
+    grid-column: 7 / span 6;
+    border-top: 1px solid var(--ink);
+  }
+
+  .steps__item {
+    display: grid;
+    grid-template-columns: 4rem minmax(0, 1fr);
+    gap: var(--s-4);
+    padding: var(--s-6) 0;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .steps__num {
+    font-size: 2.5rem;
+    line-height: 1;
+  }
+
+  .steps__item h3 {
+    margin-bottom: var(--s-2);
+  }
+
+  .steps__more {
+    padding-top: var(--s-5);
+  }
+
+  /* Register ------------------------------------------------------------ */
+  .register-note {
+    margin-top: var(--s-5);
+  }
+
+  /* Heritage ------------------------------------------------------------ */
+  .heritage .grid {
+    row-gap: var(--s-7);
+  }
+
+  .heritage__intro {
+    grid-column: 1 / span 5;
+    display: grid;
+    gap: var(--s-5);
+    align-content: start;
+    position: sticky;
+    top: calc(var(--header-h) + var(--s-6));
+  }
+
+  .ledger {
+    grid-column: 7 / span 6;
+    border-top: 1px solid var(--ink);
+  }
+
+  .ledger__row {
+    display: grid;
+    grid-template-columns: 7.5rem minmax(0, 1fr);
+    gap: var(--s-5);
+    padding: var(--s-6) 0;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .ledger__year {
+    font-size: clamp(1.75rem, 1.4rem + 1vw, 2.5rem);
+    line-height: 1;
+  }
+
+  .ledger__title {
+    font-size: 1.25rem;
+    margin-bottom: var(--s-2);
+  }
+
+  @media (max-width: 899px) {
+    .hero {
+      padding-bottom: var(--s-8);
+    }
+    .hero__text,
+    .hero__figure,
+    .band__heading,
+    .band__body,
+    .featured__media,
+    .featured__body,
+    .how__intro,
+    .steps,
+    .heritage__intro,
+    .ledger {
+      grid-column: 1 / -1;
+    }
+    .hero__text {
+      padding-bottom: 0;
+    }
+    .featured__media,
+    .heritage__intro {
+      position: static;
+    }
+    .featured__media {
+      max-width: 28rem;
+    }
+    .triptych {
+      grid-template-columns: 1fr 1fr;
+    }
+    .triptych__item--2 {
+      grid-column: 1 / -1;
+      grid-row: 1;
+      margin-top: 0;
+    }
+    .triptych__item--3 {
+      margin-top: var(--s-7);
+    }
+  }
+
+  @media (max-width: 539px) {
+    .ledger__row {
+      grid-template-columns: 1fr;
+      gap: var(--s-2);
+    }
+    .steps__item {
+      grid-template-columns: 3rem minmax(0, 1fr);
+    }
+    .steps__num {
+      font-size: 2rem;
+    }
+  }
+</style>

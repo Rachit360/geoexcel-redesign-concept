@@ -1,0 +1,334 @@
+---
+import { Picture } from 'astro:assets';
+import Base from '../../../layouts/Base.astro';
+import Breadcrumbs from '../../../components/Breadcrumbs.astro';
+import SpecSheet from '../../../components/SpecSheet.astro';
+import AddToQuote from '../../../components/AddToQuote.astro';
+import { categories, type Category, type Product } from '../../../data/catalogue';
+import { url, categoryUrl, productUrl } from '../../../lib/paths';
+import { productImage } from '../../../lib/images';
+
+export function getStaticPaths() {
+  return categories.flatMap((category) =>
+    category.products.map((product, index) => ({
+      params: { category: category.slug, product: product.slug },
+      props: { category, product, index },
+    })),
+  );
+}
+
+interface Props {
+  category: Category;
+  product: Product;
+  index: number;
+}
+
+const { category, product, index } = Astro.props;
+const siblings = category.products.filter((p) => p.slug !== product.slug);
+const prev = category.products[index - 1];
+const next = category.products[index + 1];
+const enquireHref = url(`/enquiry/?add=${category.slug}/${product.slug}`);
+---
+
+<Base
+  title={`${product.name} — ${category.shortName}`}
+  description={`${product.name} (${product.kind}) from Geo Excel. ${product.summary} Origin, specification, pack sizes and HS code.`}
+>
+  <div class="wrap product">
+    <Breadcrumbs
+      items={[
+        { label: 'Products', href: url('/products/') },
+        { label: category.shortName, href: categoryUrl(category.slug) },
+        { label: product.name },
+      ]}
+    />
+
+    <div class="product__grid">
+      <div class="product__media">
+        <figure class="figure">
+          <Picture
+            src={productImage(product.image)}
+            formats={['avif', 'webp']}
+            widths={[480, 720, 1080]}
+            sizes="(min-width: 900px) 46vw, 100vw"
+            alt={`${product.name}: ${product.kind.toLowerCase()}`}
+            loading="eager"
+            fetchpriority="high"
+          />
+          <figcaption>
+            <span class="mono">Fig. {category.number}.{String(index + 1).padStart(2, '0')}</span>
+            {product.name}. Illustrative photograph.
+          </figcaption>
+        </figure>
+      </div>
+
+      <div class="product__body">
+        <p class="product__code">
+          <span class="marker" data-marker={category.marker}></span>
+          <span class="mono">{category.number}</span>
+          <a href={categoryUrl(category.slug)}>{category.name}</a>
+        </p>
+        <h1>{product.name}</h1>
+        <p class="product__kind">{product.kind}</p>
+        <p class="lead">{product.summary}</p>
+
+        <div class="btn-row product__actions">
+          <AddToQuote product={product} category={category} variant="primary" />
+          <a class="btn btn--secondary" href={enquireHref}>Enquire about this product</a>
+        </div>
+
+        <SpecSheet product={product} category={category} />
+
+        <aside class="product__ask" aria-labelledby="ask-title">
+          <h2 id="ask-title" class="label">To quote accurately, include</h2>
+          <ul role="list">
+            <li>Quantity and unit (kg, tonnes or containers)</li>
+            <li>Preferred pack size and packing type</li>
+            <li>Destination port and Incoterm</li>
+            <li>Target shipment month and any lab or labelling requirements</li>
+          </ul>
+        </aside>
+
+        <nav class="product__pager" aria-label={`${category.shortName} products`}>
+          {
+            prev ? (
+              <a href={productUrl(category.slug, prev.slug)} rel="prev">
+                <span class="label">Previous</span>
+                <span class="product__pager-name">{prev.name}</span>
+              </a>
+            ) : (
+              <span />
+            )
+          }
+          {
+            next && (
+              <a href={productUrl(category.slug, next.slug)} rel="next" class="product__pager-next">
+                <span class="label">Next</span>
+                <span class="product__pager-name">{next.name}</span>
+              </a>
+            )
+          }
+        </nav>
+      </div>
+    </div>
+  </div>
+
+  <section class="section section--tight section--deep" aria-labelledby="more-title">
+    <div class="wrap">
+      <div class="more__head">
+        <h2 id="more-title">More in {category.shortName}</h2>
+        <a class="link link--arrow" href={categoryUrl(category.slug)}>Compare all {category.products.length}</a>
+      </div>
+      <ul class="more" role="list">
+        {
+          siblings.map((p) => (
+            <li>
+              <a href={productUrl(category.slug, p.slug)}>
+                <span class="more__name">{p.name}</span>
+                <span class="more__kind">{p.kind}</span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <div class="mobile-bar">
+    <span class="mobile-bar__name">{product.name}</span>
+    <AddToQuote product={product} category={category} variant="compact" />
+  </div>
+</Base>
+
+<style>
+  .product {
+    padding-top: var(--s-6);
+    padding-bottom: var(--section);
+  }
+
+  .product__grid {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: var(--gutter);
+    row-gap: var(--s-7);
+    margin-top: var(--s-6);
+    align-items: start;
+  }
+
+  .product__media {
+    grid-column: 1 / span 6;
+    position: sticky;
+    top: calc(var(--header-h) + var(--s-5));
+  }
+
+  .product__media :global(img) {
+    width: 100%;
+    background: var(--paper-sunk);
+  }
+
+  .product__body {
+    grid-column: 8 / span 5;
+    display: grid;
+    gap: var(--s-5);
+  }
+
+  .product__code {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-size: 0.875rem;
+  }
+
+  .product__code a {
+    color: var(--ink);
+    text-underline-offset: 0.2em;
+  }
+
+  .product__kind {
+    margin-top: calc(var(--s-3) * -1);
+    color: var(--muted);
+  }
+
+  .product__actions {
+    margin-bottom: var(--s-3);
+  }
+
+  .product__ask {
+    padding: var(--s-5);
+    background: var(--paper-deep);
+  }
+
+  .product__ask ul {
+    display: grid;
+    gap: 0.4rem;
+    margin-top: var(--s-3);
+    font-size: 0.9375rem;
+  }
+
+  .product__ask li {
+    display: grid;
+    grid-template-columns: 1.5rem 1fr;
+  }
+
+  .product__ask li::before {
+    content: '—';
+    color: var(--muted);
+  }
+
+  .product__pager {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--gutter);
+    border-top: 1px solid var(--rule);
+    padding-top: var(--s-4);
+  }
+
+  .product__pager a {
+    display: grid;
+    gap: 0.2rem;
+    color: var(--ink);
+    text-decoration: none;
+  }
+
+  .product__pager-next {
+    text-align: right;
+  }
+
+  .product__pager-name {
+    font-family: var(--font-serif);
+    font-size: 1.125rem;
+  }
+
+  .product__pager a:hover .product__pager-name {
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+    text-decoration-thickness: 1px;
+  }
+
+  .more__head {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: var(--s-3);
+    margin-bottom: var(--s-5);
+  }
+
+  .more__head h2 {
+    font-size: var(--step-h3);
+  }
+
+  .more {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0 var(--gutter);
+  }
+
+  .more a {
+    display: grid;
+    gap: 0.15rem;
+    padding: var(--s-4) 0;
+    border-top: 1px solid var(--rule);
+    color: var(--ink);
+    text-decoration: none;
+  }
+
+  .more__name {
+    font-family: var(--font-serif);
+    font-size: 1.1875rem;
+  }
+
+  .more__kind {
+    font-size: 0.8125rem;
+    color: var(--muted);
+  }
+
+  .more a:hover .more__name {
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+    text-decoration-thickness: 1px;
+  }
+
+  .mobile-bar {
+    display: none;
+  }
+
+  @media (max-width: 899px) {
+    .product__media,
+    .product__body {
+      grid-column: 1 / -1;
+    }
+    .product__media {
+      position: static;
+    }
+    .more {
+      grid-template-columns: 1fr 1fr;
+    }
+    .mobile-bar {
+      position: sticky;
+      bottom: 0;
+      z-index: 40;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--s-3);
+      padding: 0.6rem var(--margin);
+      background: var(--paper);
+      border-top: 1px solid var(--ink);
+    }
+    .mobile-bar__name {
+      font-family: var(--font-serif);
+      font-size: 1.0625rem;
+      color: var(--ink);
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+  }
+
+  @media (max-width: 539px) {
+    .more {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
