@@ -427,6 +427,17 @@ const buyerTypes = [
     }
   }
 
+  function messageFor(input: HTMLInputElement) {
+    const label = input.dataset.label || input.name;
+    const value = input.value.trim();
+    if (input.type === 'checkbox') return input.checked ? '' : 'Please confirm to continue.';
+    if (!value) return `Enter ${label.charAt(0).toLowerCase()}${label.slice(1)}.`;
+    if (input.type === 'email' && !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(value))
+      return 'Enter an email address in the format name@company.com.';
+    if (input.dataset.lineField === 'qty' && !/^\d+([.,]\d+)?$/.test(value)) return 'Enter a number, for example 25000.';
+    return '';
+  }
+
   function validate() {
     const problems: { el: HTMLElement; text: string }[] = [];
     const items = quote.all();
@@ -434,19 +445,9 @@ const buyerTypes = [
     if (!items.length) problems.push({ el: addSelect, text: 'Add at least one product to your quote list.' });
 
     form.querySelectorAll<HTMLInputElement>('input[required]').forEach((input) => {
-      let message = '';
-      const label = input.dataset.label || input.name;
-      if (input.type === 'checkbox') {
-        if (!input.checked) message = 'Please confirm to continue.';
-      } else if (!input.value.trim()) {
-        message = `Enter ${label.charAt(0).toLowerCase()}${label.slice(1)}.`;
-      } else if (input.type === 'email' && !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(input.value.trim())) {
-        message = 'Enter an email address in the format name@company.com.';
-      } else if (input.dataset.lineField === 'qty' && !/^\d+([.,]\d+)?$/.test(input.value.trim())) {
-        message = 'Enter a number, for example 25000.';
-      }
+      const message = messageFor(input);
       setError(input, message);
-      if (message) problems.push({ el: input, text: `${label}: ${message}` });
+      if (message) problems.push({ el: input, text: `${input.dataset.label || input.name}: ${message}` });
     });
 
     errorList.innerHTML = problems
@@ -463,10 +464,16 @@ const buyerTypes = [
     document.getElementById(a.getAttribute('href')!.slice(1))?.focus();
   });
 
-  form.addEventListener('focusout', (e) => {
+  // Once a field has been flagged, clear its message as soon as the buyer fixes it.
+  // Re-checking while typing (not on blur) avoids the layout shifting under the pointer
+  // at the moment the buyer clicks the next control.
+  function recheck(e: Event) {
     const el = e.target as HTMLInputElement;
-    if (el.matches('input[required]') && el.getAttribute('aria-invalid') === 'true') validate();
-  });
+    if (!el.matches('input[required]') || el.getAttribute('aria-invalid') !== 'true') return;
+    if (!messageFor(el)) setError(el, '');
+  }
+  form.addEventListener('input', recheck);
+  form.addEventListener('change', recheck);
 
   /* Compose the enquiry */
   function compose() {
