@@ -1,96 +1,104 @@
-# Geo Excel — concept redesign
+# Geo Excel — website redesign
 
-A focused redesign of [geoexcel.group](https://www.geoexcel.group/), built for a hiring assignment. It has two pages: a **homepage** and a **products page**.
+A redesign of [geoexcel.group](https://www.geoexcel.group/) for Geo Excel, a Bengaluru exporter of rice, spices, frozen foods, edible oils and ghee. It has two pages: a homepage that introduces the company to a first-time international buyer, and a products page listing all 44 products.
 
-> This is a concept, **not** the official Geo Excel website. It is marked `noindex` so it stays out of search results.
+> This is a concept, not the official Geo Excel website. It's marked `noindex` so it stays out of search results.
 
-## The problem
+## Deliverables
 
-**A first-time international buyer could not quickly understand who Geo Excel is, why to trust it, or how to start trading with it.**
-
-The current site's headline ("Facilitating International & Domestic Trade") does not say what the company sells. Products sit on long duplicated pages. The registrations are hidden in image sliders. The only enquiry route is a four-field form with no guidance on what to send.
-
-## The response
-
-The homepage answers a first-time visitor's questions in order:
-
-| Question | Section |
+| Deliverable | Where |
 |---|---|
-| What is this company? | Hero, the at-a-glance figures, and **About** (Geographic Excellence, farming roots since the 1980s, the Group's timeline and verticals) |
-| What do they sell, and from where? | **Geographic Excellence**: products grouped by their Indian region of origin. **Categories**: rice, spices, frozen foods, oils and ghee. **Featured products** |
-| Why choose them? | **Why Geo Excel**: six reasons, each backed by published information |
-| How do I buy? | **How to trade**: four steps from first message to dispatch |
-| Can I trust them? | **Registrations**: APEDA, IEC and Udyam, with certificate images, numbers and dates. **Sustainability**: their UN SDG commitment and four focus areas, shown with photography |
-| How do I get in touch? | **Contact**: an email enquiry template, phone and address |
+| Live website | _Add the deployed URL here once it's published (see [Deployment](#deployment))_ |
+| Source code | [github.com/Rachit360/geoexcel-redesign](https://github.com/Rachit360/geoexcel-redesign) |
+| Problem and solution note | [`docs/problem-and-solution.md`](docs/problem-and-solution.md) (Word version: [`docs/problem-and-solution.docx`](docs/problem-and-solution.docx)) |
+| README | This file |
 
-The **products page** shows all 44 products with an image, a short description and their origin. A category filter uses the four category tiles. Every product has an **Enquire** link that opens the visitor's email app with a pre-filled enquiry template.
+## In short
 
-## Content rules
+**Problem:** a new buyer visiting the current site can't quickly tell what Geo Excel sells, why to trust it, or how to start trading. The headline is generic, the registrations are hidden in image sliders, and the only way to get in touch is a four-field contact form.
 
-- Only facts Geo Excel publishes on its website or in its certificates are used.
-- The heritage is shown as **"since the 1980s"**, which is how the company states it. A specific number of years (e.g. "46 years") would assume a founding year of 1980, which the site does not state.
-- Registrations whose published copies have expired (FSSAI, Council for Leather Exports) are not shown. Status is calculated from each document's validity date at build time (`src/data/registrations.ts`).
-- Photographs come from the current geoexcel.group site and are captioned only with what they show.
-- `npm run build` fails if placeholder wording, a broken internal link, or an expired registration reaches the output (`scripts/check-build.mjs`).
+**Solution:** the homepage walks through a buyer's questions in order: who Geo Excel is, what it sells and where it comes from, why choose it, how to trade, proof of registration, sustainability, and contact. Every product has an Enquire button that opens the buyer's email app with a short template, so the first message already has what's needed for a quote.
 
-## Design
+The full reasoning is in the [problem and solution note](docs/problem-and-solution.md).
 
-- **Reference:** colour and type direction from [careloop.framer.website](https://careloop.framer.website/).
-- **Palette:** forest green `#112a20`, cream `#eaebdb`, orange `#ef562c` (with `#b23a18` for text and buttons, to meet AA contrast) and a yellow highlight `#fddb22`. The four stroke colours of the Geo Excel logo mark the four categories.
-- **Type:** Bayon (condensed display, all caps) for headings and Manrope for text. Big Shoulders Stencil is used once, for the "shipping mark" export label in the hero.
-- **Shape:** rounded panels and cards with pill-shaped buttons.
-- **Motion:** a single fade-in on scroll, switched off when the visitor prefers reduced motion.
+## Tech stack
 
-## Code structure
+- [Astro 5](https://astro.build): static site, no UI framework
+- Plain CSS with custom properties for the design tokens (`src/styles/global.css`)
+- TypeScript for data and the small client-side scripts (mobile menu, product filter, fade-in)
+- `astro:assets` for responsive AVIF/WebP images
+- Self-hosted fonts via Fontsource: Bayon, Manrope, Big Shoulders Stencil
+- No backend, database, tracking or cookies. Enquiries are `mailto:` links.
 
-```
-src/
-  data/
-    catalogue.ts       44 products, 4 categories, regions-of-origin helper
-    company.ts         address, contact, history, SDG commitments
-    registrations.ts   registrations + status-from-expiry-date
-  components/
-    Header.astro       nav + concept notice + mobile menu
-    Footer.astro
-    Logo.astro         Geo Excel mark redrawn as SVG
-    ProductCard.astro  shared by homepage and products page
-    ShippingMark.astro the stencilled export label
-    home/              one file per homepage section, in page order
-  lib/
-    enquiry.ts         builds the mailto: enquiry link
-    images.ts, paths.ts
-  pages/
-    index.astro        homepage: just the sections, in order
-    products/index.astro  products grid + category filter (small inline script)
-    404.astro
-  scripts/site.ts      mobile menu and reveal-on-scroll
-  styles/global.css    design tokens and shared styles
-```
+## Setup
 
-**Stack:** [Astro 5](https://astro.build), a static site with no UI framework. Images are generated as responsive AVIF/WebP with `astro:assets`, and fonts are self-hosted. There is no backend, database or tracking. Enquiries are `mailto:` links, so nothing is stored.
-
-## Run locally
+You need Node.js 20 or newer (built with Node 22).
 
 ```bash
 npm install
-npm run dev        # http://localhost:4321
 ```
 
 ```bash
-npm run build      # static site in dist/, then the build checks
-npm run preview    # serve the built site
+npm run dev
 ```
 
-## Deploy
+Then open http://localhost:4321.
 
-- **Vercel:** import the repository. It needs no configuration, and `vercel.json` redirects the old Wix URLs (e.g. `/general-9` → `/products/?category=rice`).
-- **GitHub Pages:** set *Settings → Pages → Source* to "GitHub Actions" and push to `main` (`.github/workflows/deploy-pages.yml`).
-- **Any static host:** upload `dist/`.
+To build and preview the production version:
 
-## Design skills
+```bash
+npm run build
+```
 
-`.claude/skills/ui-designer` and `.claude/skills/ux-designer` are the "Claude UX & UI Design Skills" (Yummy Design, v3). They were used to guide the design work.
+```bash
+npm run preview
+```
+
+`npm run build` also runs `scripts/check-build.mjs`. The build fails if any page has leftover placeholder text or a broken internal link, or if the homepage lists an expired certificate.
+
+## Deployment
+
+The output is a static `dist/` folder, so any static host works.
+
+- **Vercel (recommended):** import the repo. Vercel detects Astro and needs no settings. `vercel.json` also redirects the old Wix URLs, e.g. `/general-9` → `/products/?category=rice`.
+- **Netlify:** build command `npm run build`, publish directory `dist`. Or drag the built `dist/` folder onto [app.netlify.com/drop](https://app.netlify.com/drop) for a quick preview.
+- **GitHub Pages:** in *Settings → Pages*, set *Source* to *GitHub Actions*, then push to `main`. The workflow in `.github/workflows/deploy-pages.yml` builds the site with the right base path.
+
+## Project structure
+
+```
+src/
+  pages/
+    index.astro              homepage - just the sections in order
+    products/index.astro     product grid + category filter
+    404.astro
+  components/
+    home/                    one file per homepage section
+    Header.astro, Footer.astro, Logo.astro
+    ProductCard.astro        used on both pages
+    ShippingMark.astro       stencil label in the hero
+  data/
+    catalogue.ts             the 44 products and 4 categories
+    company.ts               contact details, history, sustainability
+    registrations.ts         certificates and their expiry dates
+  lib/                       enquiry link, image and path helpers
+  scripts/site.ts            mobile menu, fade-in on scroll
+  styles/global.css          colours, type, spacing, shared styles
+docs/                        problem and solution note
+scripts/                     build check, image prep
+```
+
+## Known limitations
+
+- **Enquiries use email links.** There's no form backend, so the Enquire buttons open the visitor's own mail app. Anyone without a mail app set up has to use the email address or phone number shown on the page. A real launch would want a proper form, e.g. a serverless function plus transactional email.
+- **Content is taken from the current site.** Product details, photos, the logo and the certificates all come from geoexcel.group. Photos should be swapped for Geo Excel's own originals, and their permission to reuse the certificate images hasn't been checked.
+- **Some product specs are deliberately missing.** Where the current site gives two different values for the same spec, I left it out rather than guess. HS codes are shown at the 4/6-digit international level only.
+- **Two certificates aren't shown.** The FSSAI licence and Council for Leather Exports copies on the current site have expired, so they're hidden until current copies are available.
+- **"Since the 1980s", not a number of years.** The company only says its roots go back to the 1980s, so the site doesn't claim a specific figure.
+- **No product detail pages.** Each product has a card with a description and an Enquire button; separate pages were left out to keep the scope focused.
+- **Testing:** checked in Chromium at desktop (1440px) and mobile (390px) widths with automated accessibility checks (axe, WCAG 2.2 AA). Not yet tested in Safari, on real devices, or with a screen reader.
+- **Old URLs without a trailing slash** (e.g. `/general-9`) only redirect on Vercel, through `vercel.json`. On other hosts use `/general-9/`.
 
 ## Credits
 
-Concept design and development: Rachit Trivedi. Product information, logo, certificates and photographs © Geo Excel, reproduced from geoexcel.group for this proposal.
+Design and development by Rachit Trivedi. Colour and type direction referenced from [careloop.framer.website](https://careloop.framer.website/). Product information, logo, certificates and photographs belong to Geo Excel and are reproduced from geoexcel.group for this proposal.
