@@ -9,7 +9,7 @@ A redesign of [geoexcel.group](https://www.geoexcel.group/) for Geo Excel, a Ben
 | Deliverable | Where |
 |---|---|
 | Live website | [geoexcel-redesign-concept.vercel.app](https://geoexcel-redesign-concept.vercel.app/) |
-| Source code | [github.com/Rachit360/geoexcel-redesign](https://github.com/Rachit360/geoexcel-redesign) |
+| Source code | [github.com/Rachit360/geoexcel-redesign-concept](https://github.com/Rachit360/geoexcel-redesign-concept) |
 | Problem and solution note | [`docs/problem-and-solution.md`](docs/problem-and-solution.md) (Word version: [`docs/problem-and-solution.docx`](docs/problem-and-solution.docx)) |
 | README | This file |
 
