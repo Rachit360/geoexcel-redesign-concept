@@ -2,7 +2,7 @@
 import { defineConfig } from 'astro/config';
 
 // SITE_URL / BASE_PATH are only needed for GitHub Pages (served from /repo-name/).
-const site = process.env.SITE_URL || 'https://geoexcel-redesign.vercel.app';
+const site = process.env.SITE_URL || 'https://geoexcel-redesign-concept.vercel.app';
 const base = process.env.BASE_PATH || '/';
 const withBase = (path) => `${base.replace(/\/$/, '')}${path}`;
 
