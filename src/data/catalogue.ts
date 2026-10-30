@@ -1,27 +1,18 @@
-/**
- * Product catalogue.
- *
- * Source: the product pages of geoexcel.group (Rice, Whole Spices, IQF Products,
- * Edible Oil & Ghee, Fashion & Lifestyle). Values are reproduced as the company
- * publishes them, with three editorial rules:
- *
- *  1. Where the company's own page gives two different values for the same
- *     parameter (e.g. moisture 14% in one block, 13.5% max in another), the
- *     parameter is omitted rather than guessed.
- *  2. Values that are clearly copy-and-paste errors on the source page
- *     (e.g. a nutmeg shelf life of "14 Yr") are omitted.
- *  3. HS codes are shown at the internationally harmonised 4- or 6-digit level
- *     only. The 8-digit national tariff lines on the source site were
- *     inconsistent, so they are not reproduced; the exact line is confirmed on
- *     the commercial invoice.
- */
+// Product data copied from the product pages on geoexcel.group.
+//
+// A few things I left out on purpose:
+// - specs where their own page lists two different values (e.g. 1121 Sella
+//   moisture is both 14% and 13.5% max) - didn't want to guess which is right
+// - obvious typos like a 14 year shelf life for nutmeg
+// - the 8-digit HS codes, which were inconsistent; I kept the 4/6-digit
+//   international heading instead
 
 export type Spec = { label: string; value: string };
 
 export type Product = {
   slug: string;
   name: string;
-  /** Short qualifier shown under the name, e.g. "Basmati · Steam". */
+  // shown under the name, e.g. "Basmati · Steam"
   kind: string;
   summary: string;
   origin?: string;
@@ -41,7 +32,6 @@ export type Category = {
   intro: string;
   photo: string;
   photoAlt: string;
-  /** Facts shared by every product in the category. */
   common?: Spec[];
   products: Product[];
 };
@@ -767,11 +757,8 @@ export const categories: Category[] = [
   },
 ];
 
-/**
- * Fashion & Lifestyle appears on the current site as a page of photographs with
- * no product text. The company also published a Council for Leather Exports
- * membership for leather footwear. It is presented as an enquiry-only line.
- */
+// The old Fashion & Lifestyle page is just photos (leather shoes), so footwear
+// only gets a small "ask us" note on the products page.
 export const footwear = {
   slug: 'leather-footwear',
   number: '05',
@@ -792,10 +779,8 @@ export function findProduct(categorySlug: string, productSlug: string) {
 
 export const productId = (categorySlug: string, productSlug: string) => `${categorySlug}/${productSlug}`;
 
-/**
- * Indian states named as a region of origin in the product data, with the
- * products that list them. Used for the "Geographic Excellence" section.
- */
+// Groups products by the Indian state in their origin, for the
+// Geographic Excellence section on the homepage.
 const STATES = [
   'Punjab',
   'Kerala',

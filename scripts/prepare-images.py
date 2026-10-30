@@ -1,10 +1,9 @@
-"""Prepare photography for the site from images published on geoexcel.group.
+"""Resize the product photos taken from geoexcel.group for the site.
 
-Usage: python3 scripts/prepare-images.py <dir-with-downloaded-originals>
+Usage: python3 scripts/prepare-images.py <folder-with-original-downloads>
 
-The source images were downloaded from the current public Geo Excel website
-(static.wixstatic.com). Many product images there are small photographs placed
-on a white 1080x1920 canvas, so we trim the white padding before resizing.
+Most product shots on their site are small photos on a white 1080x1920
+canvas, so the white border gets trimmed off first.
 """
 import sys
 from pathlib import Path
@@ -35,11 +34,8 @@ PRODUCTS = {
 }
 PHOTOS = {
     "04": "hero-rice-spoon", "03": "band-spice-bowls", "13": "frozen-peas-macro",
-    "05": "olive-oil-pour", "06": "rice-red-texture", "08": "ghee-jar",
-    "09": "sesame-spoons", "10": "cloves-macro", "11": "fries-macro",
-    "12": "coconut-oil", "14": "nutmeg-macro", "07": "shoe-brown-derby",
-    "15": "shoe-brogue", "64": "shoe-black-detail", "65": "shoe-sole",
-    "66": "shoe-black-pair", "67": "shoe-brown-oxford",
+    "05": "olive-oil-pour", "06": "rice-red-texture", "09": "sesame-spoons",
+    "10": "cloves-macro", "12": "coconut-oil",
 }
 
 

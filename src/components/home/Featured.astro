@@ -3,7 +3,7 @@ import ProductCard from '../ProductCard.astro';
 import { allProducts, productCount } from '../../data/catalogue';
 import { url } from '../../lib/paths';
 
-// One product from each category.
+// one per category
 const picks = ['rice/1121-basmati-steam', 'spices/green-cardamom', 'frozen-foods/french-fries', 'edible-oils-ghee/a2-ghee'];
 const featured = picks.map((id) => allProducts.find((p) => `${p.category.slug}/${p.slug}` === id)!);
 ---

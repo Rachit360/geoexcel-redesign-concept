@@ -1,7 +1,7 @@
-// Reveal styles only apply once this script runs, so content is never hidden if JS fails.
+// the fade-in styles are scoped to .js, so nothing stays hidden if this script doesn't load
 document.documentElement.classList.add('js');
 
-/* Mobile menu ---------------------------------------------------------- */
+// mobile menu
 
 const toggle = document.querySelector<HTMLButtonElement>('[data-menu-toggle]');
 const menu = document.querySelector<HTMLElement>('[data-menu]');
@@ -23,7 +23,7 @@ document.addEventListener('keydown', (e) => {
 });
 window.matchMedia('(min-width: 900px)').addEventListener('change', (m) => m.matches && setMenu(false));
 
-/* Reveal on scroll ----------------------------------------------------- */
+// fade sections in as they scroll into view
 
 const reveals = document.querySelectorAll<HTMLElement>('[data-reveal]');
 if ('IntersectionObserver' in window && !matchMedia('(prefers-reduced-motion: reduce)').matches) {

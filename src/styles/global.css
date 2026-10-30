@@ -1,22 +1,17 @@
-/* ==========================================================================
-   Geo Excel — design tokens and base styles
-   Palette and type are referenced from careloop.framer.website: deep forest
-   green, cream, a warm orange and a little yellow; a condensed all-caps
-   display face (Bayon) over a clean grotesque (Manrope). The "shipping mark"
-   stencil is kept as a single accent.
-   ========================================================================== */
+/* Colours and fonts are based on careloop.framer.website (forest green, cream,
+   orange; Bayon + Manrope). The stencil font is only used for the hero label. */
 
 :root {
-  /* Colour */
-  --forest: #112a20; /* primary dark: text, dark panels */
+  /* colours */
+  --forest: #112a20;
   --forest-2: #1c3d30;
   --green: #2b614a;
   --sage: #c6dead;
-  --cream: #eaebdb; /* page background */
-  --cream-2: #f4f4ea; /* raised surfaces */
+  --cream: #eaebdb;
+  --cream-2: #f4f4ea;
   --white: #fdfdf8;
-  --orange: #ef562c; /* accent: decorative and large text */
-  --orange-ink: #b23a18; /* accent for buttons and small text (AA on white) */
+  --orange: #ef562c;
+  --orange-ink: #b23a18; /* darker orange for text/buttons, passes AA contrast */
   --yellow: #fddb22;
   --text: #22362d;
   --muted: #4d5f56;
@@ -24,23 +19,23 @@
   --on-dark: #eaebdb;
   --on-dark-muted: #b5c2b8;
 
-  /* Category markers: the four strokes of the Geo Excel logo */
+  /* logo stroke colours, used to tag the 4 categories */
   --mark-green: #4cb654;
   --mark-orange: #f2901c;
   --mark-teal: #5bc8b0;
   --mark-red: #e01e28;
 
-  /* Type */
+  /* type */
   --font-display: 'Bayon', 'Arial Narrow', Impact, sans-serif;
   --font-sans: 'Manrope Variable', 'Helvetica Neue', Arial, sans-serif;
   --font-stencil: 'Big Shoulders Stencil Display Variable', 'Arial Narrow', sans-serif;
 
-  --step-hero: clamp(3.5rem, 1.6rem + 7.4vw, 8.25rem); /* 56 → 132 */
-  --step-h2: clamp(2.5rem, 1.6rem + 3.4vw, 5rem); /* 40 → 80 */
-  --step-h3: clamp(1.5rem, 1.25rem + 0.8vw, 2rem); /* 24 → 32 */
-  --step-lead: clamp(1.0625rem, 1rem + 0.25vw, 1.1875rem); /* 17 → 19 */
+  --step-hero: clamp(3.5rem, 1.6rem + 7.4vw, 8.25rem); /* 56-132px */
+  --step-h2: clamp(2.5rem, 1.6rem + 3.4vw, 5rem); /* 40-80px */
+  --step-h3: clamp(1.5rem, 1.25rem + 0.8vw, 2rem); /* 24-32px */
+  --step-lead: clamp(1.0625rem, 1rem + 0.25vw, 1.1875rem); /* 17-19px */
 
-  /* Space (8pt) */
+  /* spacing (8px steps) */
   --s-1: 0.25rem;
   --s-2: 0.5rem;
   --s-3: 0.75rem;
@@ -52,13 +47,13 @@
   --s-9: 6rem;
   --section: clamp(4rem, 2.5rem + 5vw, 7.5rem);
 
-  /* Layout */
+  /* layout */
   --max: 80rem; /* 1280px */
   --margin: clamp(1rem, 0.3rem + 3vw, 2.5rem);
   --gutter: clamp(1rem, 0.7rem + 1vw, 1.5rem);
   --header-h: 4.5rem;
 
-  /* Shape: one rounded personality, pill controls */
+  /* radius */
   --r-panel: 2rem;
   --r-card: 1.5rem;
   --r-inner: 1rem;
@@ -75,9 +70,7 @@
   }
 }
 
-/* --------------------------------------------------------------------------
-   Base
-   -------------------------------------------------------------------------- */
+/* base */
 
 *,
 *::before,
@@ -199,9 +192,7 @@ a {
   top: 0.75rem;
 }
 
-/* --------------------------------------------------------------------------
-   Layout helpers
-   -------------------------------------------------------------------------- */
+/* layout */
 
 .wrap {
   width: 100%;
@@ -214,7 +205,7 @@ a {
   padding-block: var(--section);
 }
 
-/* Section heading: eyebrow, headline, short intro */
+/* section intro: small label, heading, short paragraph */
 .intro {
   display: grid;
   gap: var(--s-4);
@@ -253,7 +244,7 @@ a {
   color: var(--on-dark-muted);
 }
 
-/* Highlighted words in a headline: a yellow underline, as on the reference site */
+/* yellow underline on a few words in headings */
 .hl {
   text-decoration: underline;
   text-decoration-color: var(--yellow);
@@ -267,14 +258,12 @@ a {
   color: var(--yellow);
 }
 
-/* Astro's <Picture> renders an inline <picture>; make it fill its frame */
+/* <Picture> outputs an inline <picture>, which breaks height: 100% on the img */
 picture {
   display: block;
 }
 
-/* --------------------------------------------------------------------------
-   Buttons
-   -------------------------------------------------------------------------- */
+/* buttons */
 
 .btn {
   display: inline-flex;
@@ -380,9 +369,7 @@ picture {
   color: var(--orange-ink);
 }
 
-/* --------------------------------------------------------------------------
-   Category marker (logo stroke colours)
-   -------------------------------------------------------------------------- */
+/* category dots - same colours as the four logo strokes */
 
 .marker {
   display: inline-block;
@@ -406,9 +393,7 @@ picture {
   --marker: var(--mark-red);
 }
 
-/* --------------------------------------------------------------------------
-   Shipping mark: the stencilled export label, used once as an accent
-   -------------------------------------------------------------------------- */
+/* stencil label (hero) */
 
 .mark {
   display: grid;
@@ -443,9 +428,7 @@ picture {
   letter-spacing: 0.06em;
 }
 
-/* --------------------------------------------------------------------------
-   Reveal on scroll (content is visible without JS and with reduced motion)
-   -------------------------------------------------------------------------- */
+/* fade-in on scroll, skipped for reduced motion */
 
 @media (prefers-reduced-motion: no-preference) {
   .js [data-reveal] {

@@ -1,12 +1,8 @@
-/**
- * Registrations read from the certificate images published on
- * geoexcel.group/certificates.
- *
- * Status is computed from `validUntil` at build time, so a document can never be
- * presented as current after its expiry date. Documents whose published copy has
- * already expired are kept out of the public register (`publish: false`) until a
- * current copy is available — see the redesign notes page.
- */
+// Details read off the certificate images on geoexcel.group/certificates.
+//
+// Status is worked out from the expiry date at build time, so an expired
+// certificate can't show as current. FSSAI and the leather council ones on
+// their site have already expired, so they're hidden until we get new copies.
 
 export type Registration = {
   id: string;
@@ -85,7 +81,6 @@ export function statusOf(r: Registration, today = new Date()) {
     : ({ label: 'Expired', current: false } as const);
 }
 
-/** Only documents that are marked for publication and are current today. */
 export const publicRegister = registrations.filter((r) => r.publish && statusOf(r).current);
 
 export function formatDate(iso: string) {

@@ -1,10 +1,7 @@
 import { company } from '../data/company';
 
-/**
- * Builds a mailto: link that opens the visitor's email app with a
- * structured enquiry, so Geo Excel receives the details it needs to quote.
- * No server or form backend is involved.
- */
+// No backend for now - enquiries just open the visitor's mail app with a
+// short template, so Geo Excel gets the details it needs to quote.
 export function enquiryHref(product?: string) {
   const subject = product ? `Enquiry: ${product}` : 'Trade enquiry';
   const body = [

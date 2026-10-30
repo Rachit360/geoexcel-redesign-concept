@@ -1,11 +1,5 @@
-/**
- * Company facts.
- *
- * Every value here is taken from Geo Excel's own public material:
- *  - the current website (geoexcel.group), and
- *  - the registration certificates published on its /certificates page.
- * Nothing is inferred. Where a fact could not be confirmed it is left out.
- */
+// Company details, taken from geoexcel.group and the registration certificates
+// they publish there.
 
 export const company = {
   brand: 'Geo Excel',
@@ -35,7 +29,7 @@ export const mapsHref =
   'https://www.google.com/maps/search/?api=1&query=' +
   encodeURIComponent('HRBR Layout 1st Block, Kalyan Nagar, Bengaluru 560043');
 
-/** Timeline as stated by the company on geoexcel.group/about. */
+// timeline from their About page
 export const heritage = [
   {
     year: '1980s',
@@ -64,28 +58,16 @@ export const heritage = [
   },
 ] as const;
 
-/** Verticals named by the company. Only trading is described in detail on its site. */
 export const verticals = ['Agriculture', 'Automotive', 'Construction', 'Trading'] as const;
 
-/**
- * Sustainability, as published on geoexcel.group/about-1 and the 2019 entry
- * of the company timeline. Wording is lightly edited for grammar only.
- */
+// Sustainability, from the About and Sustainability pages on geoexcel.group.
 export const sdg = {
   since: '2019',
-  statement:
-    'Since 2019 the Group has focused on the United Nations’ 17 Sustainable Development Goals, with a passion-driven approach to CSR.',
+  statement: 'Since 2019 the Group has worked towards the UN’s 17 Sustainable Development Goals.',
   approach: [
-    'Uplifting livelihoods and ensuring good working conditions',
+    'Good working conditions and livelihoods',
     'Living wages for all stakeholders',
     'Action on climate change',
-    'Building an environmentally sustainable business',
-  ],
-  principles: [
-    'Sustainable agricultural methods for collecting natural raw materials.',
-    'Proper harvesting methods — sourced at the right time, for the right price.',
-    'Supporting the preservation of endangered plant species, and avoiding their use.',
-    'Practising organic farming and avoiding pesticides and chemicals.',
-    'Avoiding raw materials that may affect the climate.',
+    'An environmentally sustainable business',
   ],
 } as const;

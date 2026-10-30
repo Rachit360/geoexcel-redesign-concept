@@ -23,7 +23,7 @@ import { photo } from '../../lib/images';
   </section>
 
   <section class="wrap" aria-label="Product categories">
-    <!-- Category tiles double as the filter. Without JavaScript all products show. -->
+    <!-- the category tiles are the filter; with JS off everything just shows -->
     <div class="filters" role="group" aria-label="Filter products by category" data-filters>
       <button type="button" class="filter filter--all" data-filter="all" aria-pressed="true">
         <span class="filter__name">All products</span>
@@ -72,8 +72,8 @@ import { photo } from '../../lib/images';
 </Base>
 
 <script>
-  // Category filter. The selected category is kept in the URL (?category=rice),
-  // so links from the homepage open the right filter and the view can be shared.
+  // Category filter. The choice goes in the URL (?category=rice) so the
+  // homepage category cards can link straight to a filtered view.
   const buttons = [...document.querySelectorAll<HTMLButtonElement>('[data-filter]')];
   const groups = [...document.querySelectorAll<HTMLElement>('[data-group]')];
   const status = document.querySelector<HTMLElement>('[data-status]');

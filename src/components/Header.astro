@@ -1,6 +1,5 @@
 ---
 import Logo from './Logo.astro';
-import { company } from '../data/company';
 import { enquiryHref } from '../lib/enquiry';
 import { url } from '../lib/paths';
 
@@ -14,13 +13,6 @@ const links = [
   { href: url('/#contact'), label: 'Contact', current: false },
 ];
 ---
-
-<aside class="notice" aria-label="Concept notice">
-  <p class="wrap">
-    Concept redesign — not the official Geo Excel website.
-    <a href={company.officialSite} rel="noopener">Visit geoexcel.group</a>
-  </p>
-</aside>
 
 <header class="header">
   <div class="wrap header__inner">
@@ -51,24 +43,6 @@ const links = [
 </header>
 
 <style>
-  .notice {
-    background: var(--forest);
-    color: var(--on-dark-muted);
-    font-size: 0.8125rem;
-    text-align: center;
-  }
-
-  .notice p {
-    padding-block: 0.55rem;
-  }
-
-  .notice a {
-    margin-left: 0.4rem;
-    color: var(--yellow);
-    font-weight: 700;
-    text-underline-offset: 0.2em;
-  }
-
   .header {
     position: sticky;
     top: 0;
@@ -172,7 +146,7 @@ const links = [
     transform: rotate(-90deg);
   }
 
-  /* Mobile: the nav list becomes a full-width panel under the header */
+  /* mobile: nav turns into a full-screen panel under the header */
   @media (max-width: 899px) {
     .header__enquire,
     .menu-btn {

@@ -25,7 +25,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     <title>{title}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
-    <!-- Concept redesign: kept out of search results so it is never mistaken for the official site. -->
+    <!-- concept site, keep it out of search results -->
     <meta name="robots" content="noindex, nofollow" />
     <meta name="theme-color" content="#112a20" />
     <link rel="icon" href={url('/favicon.svg')} type="image/svg+xml" />

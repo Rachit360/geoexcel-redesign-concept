@@ -2,7 +2,7 @@
 
 A focused redesign of [geoexcel.group](https://www.geoexcel.group/), built for a hiring assignment. It has two pages: a **homepage** and a **products page**.
 
-> This is a concept. It is **not** the official Geo Excel website: every page says so, and the site is marked `noindex`.
+> This is a concept, **not** the official Geo Excel website. It is marked `noindex` so it stays out of search results.
 
 ## The problem
 
@@ -20,7 +20,7 @@ The homepage answers a first-time visitor's questions in order:
 | What do they sell, and from where? | **Geographic Excellence**: products grouped by their Indian region of origin. **Categories**: rice, spices, frozen foods, oils and ghee. **Featured products** |
 | Why choose them? | **Why Geo Excel**: six reasons, each backed by published information |
 | How do I buy? | **How to trade**: four steps from first message to dispatch |
-| Can I trust them? | **Registrations**: APEDA, IEC and Udyam, with certificate images, numbers and dates. **Sustainability**: their UN SDG commitments and sourcing principles |
+| Can I trust them? | **Registrations**: APEDA, IEC and Udyam, with certificate images, numbers and dates. **Sustainability**: their UN SDG commitment and four focus areas, shown with photography |
 | How do I get in touch? | **Contact**: an email enquiry template, phone and address |
 
 The **products page** shows all 44 products with an image, a short description and their origin. A category filter uses the four category tiles. Every product has an **Enquire** link that opens the visitor's email app with a pre-filled enquiry template.

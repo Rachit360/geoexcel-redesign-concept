@@ -1,4 +1,4 @@
-/** Prefix an absolute site path with the configured base (e.g. a GitHub Pages sub-path). */
+// adds the base path when the site is deployed under a sub-folder (GitHub Pages)
 export function url(path: string) {
   const base = import.meta.env.BASE_URL.replace(/\/$/, '');
   if (/^(https?:|mailto:|tel:|#)/.test(path)) return path;
