@@ -30,12 +30,12 @@ const links = [
           ))
         }
         <li class="nav__cta">
-          <a class="btn" href={enquiryHref()}>Send an enquiry <span class="btn__arrow" aria-hidden="true">→</span></a>
+          <a class="btn" href={enquiryHref()} data-enquiry="">Send an enquiry <span class="btn__arrow" aria-hidden="true">→</span></a>
         </li>
       </ul>
     </nav>
 
-    <a class="btn btn--small header__enquire" href={enquiryHref()}>Enquire</a>
+    <a class="btn btn--small header__enquire" href={enquiryHref()} data-enquiry="">Enquire</a>
     <button class="menu-btn" type="button" aria-expanded="false" aria-label="Menu" data-menu-toggle>
       <span aria-hidden="true"></span>
     </button>

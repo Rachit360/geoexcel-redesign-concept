@@ -1,7 +1,5 @@
 # Geo Excel Redesign — Problem and Solution
 
-Rachit Trivedi · October 2026
-
 ## Summary
 
 Geo Excel's website doesn't help a first-time international buyer decide to get in touch. It doesn't say clearly what the company sells, it hides the things that build trust, and it gives no clear way to start a trade.
@@ -41,7 +39,7 @@ Products have the same issue: about 44 items are spread over long, duplicated pa
 | Why choose you? | Six reasons, each one backed by something Geo Excel publishes. |
 | How do I buy? | Four steps, from first message to dispatch. |
 | Are you legitimate? | Registrations are shown with their certificate images, numbers and validity dates. Sustainability shows their UN SDG commitment. |
-| How do I start? | Every product has an Enquire button. It opens the buyer's email app with a short template asking for the product, quantity, packing and destination port. |
+| How do I start? | Every product has an Enquire button. The buyer picks Gmail, Outlook or their email app, and the message is pre-filled with the product, quantity, packing and destination port. |
 
 The template matters as much as the layout: Geo Excel gets the details it needs to quote in the first message, not after three follow-up emails.
 
@@ -61,4 +59,4 @@ A buyer should be able to go from "who is this?" to sending a usable enquiry in 
 2. Share of enquiries that arrive with product, quantity and destination already filled in.
 3. Emails exchanged before a quotation can be sent.
 
-**Known limitations.** Enquiries open the visitor's email app, so a buyer with no mail app set up has to copy the address instead. Photos and certificates are reused from the current site and should be replaced with Geo Excel's own originals before a real launch. Current copies of the expired FSSAI and leather-council certificates would also strengthen the trust section.
+**Known limitations.** There's no form backend: enquiries go out from the buyer's own email, so Geo Excel only sees the ones that are actually sent. Photos and certificates are reused from the current site and should be replaced with Geo Excel's own originals before a real launch. Current copies of the expired FSSAI and leather-council certificates would also strengthen the trust section.

@@ -1,0 +1,150 @@
+---
+import { company } from '../data/company';
+---
+
+<!-- Opened by any link with data-enquiry (see the script below). -->
+<dialog class="enq" aria-labelledby="enq-title" data-enquiry-dialog>
+  <form method="dialog">
+    <button class="enq__close" aria-label="Close">×</button>
+  </form>
+
+  <p class="eyebrow">Send an enquiry</p>
+  <h2 id="enq-title" class="enq__title" data-enquiry-title>Trade enquiry</h2>
+  <p class="enq__text">
+    Choose how you'd like to send it. The message comes pre-filled with what Geo Excel needs for a quote: product,
+    quantity, packing and destination port.
+  </p>
+
+  <div class="enq__options">
+    <a class="btn" href="#" target="_blank" rel="noopener" data-compose="gmail">Gmail</a>
+    <a class="btn" href="#" target="_blank" rel="noopener" data-compose="outlook">Outlook</a>
+    <a class="btn btn--ghost" href="#" data-compose="mailApp">My email app</a>
+  </div>
+
+  <div class="enq__copy">
+    <p>Or write to <strong>{company.email}</strong> yourself.</p>
+    <div class="enq__copy-btns">
+      <button class="btn btn--small btn--ghost" type="button" data-copy="email">Copy address</button>
+      <button class="btn btn--small btn--ghost" type="button" data-copy="message">Copy message</button>
+    </div>
+    <p class="enq__status" role="status" data-enquiry-status></p>
+  </div>
+</dialog>
+
+<script>
+  import { composeLinks, enquiryMessage } from '../lib/enquiry';
+
+  const dialog = document.querySelector<HTMLDialogElement>('[data-enquiry-dialog]');
+  const title = dialog?.querySelector('[data-enquiry-title]');
+  const status = dialog?.querySelector('[data-enquiry-status]');
+  let product = '';
+
+  // Without showModal support the links just stay as plain mailto links.
+  if (dialog && typeof dialog.showModal === 'function') {
+    document.addEventListener('click', (e) => {
+      const link = (e.target as Element).closest<HTMLAnchorElement>('a[data-enquiry]');
+      if (!link) return;
+      e.preventDefault();
+
+      product = link.dataset.enquiry ?? '';
+      const links = composeLinks(product || undefined);
+      dialog.querySelectorAll<HTMLAnchorElement>('[data-compose]').forEach((a) => {
+        a.href = links[a.dataset.compose as keyof typeof links];
+      });
+      if (title) title.textContent = product ? `Enquire about ${product}` : 'Trade enquiry';
+      if (status) status.textContent = '';
+      dialog.showModal();
+    });
+
+    // close when clicking the dark backdrop around the box
+    dialog.addEventListener('click', (e) => {
+      if (e.target === dialog) dialog.close();
+    });
+
+    dialog.querySelectorAll<HTMLButtonElement>('[data-copy]').forEach((btn) =>
+      btn.addEventListener('click', async () => {
+        const { to, subject, body } = enquiryMessage(product || undefined);
+        const text = btn.dataset.copy === 'email' ? to : `Subject: ${subject}\n\n${body}`;
+        try {
+          await navigator.clipboard.writeText(text);
+          if (status) status.textContent = btn.dataset.copy === 'email' ? 'Address copied.' : 'Message copied.';
+        } catch {
+          if (status) status.textContent = `Couldn't copy. The address is ${to}.`;
+        }
+      }),
+    );
+  }
+</script>
+
+<style>
+  .enq {
+    width: min(32rem, calc(100% - 2rem));
+    padding: var(--s-6);
+    border: 0;
+    border-radius: var(--r-card);
+    background: var(--cream-2);
+    color: var(--text);
+  }
+
+  .enq::backdrop {
+    background: rgba(17, 42, 32, 0.6);
+  }
+
+  .enq__close {
+    position: absolute;
+    top: 0.75rem;
+    right: 0.75rem;
+    width: 2.75rem;
+    height: 2.75rem;
+    border: 0;
+    border-radius: 50%;
+    background: transparent;
+    color: var(--forest);
+    font-size: 1.75rem;
+    line-height: 1;
+    cursor: pointer;
+  }
+
+  .enq__close:hover {
+    background: var(--cream);
+  }
+
+  .enq__title {
+    margin-top: var(--s-2);
+    padding-right: var(--s-6);
+    font-size: var(--step-h3);
+  }
+
+  .enq__text {
+    margin-top: var(--s-3);
+    color: var(--muted);
+  }
+
+  .enq__options {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(8.5rem, 1fr));
+    gap: var(--s-2);
+    margin-top: var(--s-5);
+  }
+
+  .enq__copy {
+    margin-top: var(--s-5);
+    padding-top: var(--s-4);
+    border-top: 1px solid var(--line);
+    font-size: 0.9375rem;
+  }
+
+  .enq__copy-btns {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-2);
+    margin-top: var(--s-3);
+  }
+
+  .enq__status {
+    min-height: 1.5em;
+    margin-top: var(--s-2);
+    font-weight: 700;
+    color: var(--green);
+  }
+</style>

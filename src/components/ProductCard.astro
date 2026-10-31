@@ -31,7 +31,7 @@ const { product, category } = Astro.props;
     <p class="pcard__kind">{product.kind}</p>
     <p class="pcard__desc">{product.summary}</p>
     {product.origin && <p class="pcard__origin">Origin: {product.origin}</p>}
-    <a class="pcard__cta" href={enquiryHref(product.name)}>
+    <a class="pcard__cta" href={enquiryHref(product.name)} data-enquiry={product.name}>
       Enquire<span class="visually-hidden"> about {product.name}</span>
       <span aria-hidden="true">→</span>
     </a>

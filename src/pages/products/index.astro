@@ -16,8 +16,8 @@ import { photo } from '../../lib/images';
     <p class="eyebrow">Our products</p>
     <h1>Everything we export, <span class="hl">in one place.</span></h1>
     <p class="lead">
-      {productCount} products across four categories. Choose a category to filter, then enquire about any product — your
-      email app opens with an enquiry ready to fill in.
+      {productCount} products across four categories. Choose a category to filter, then enquire about any product. The
+      message comes pre-filled with what we need to quote.
     </p>
     </div>
   </section>
@@ -66,7 +66,7 @@ import { photo } from '../../lib/images';
 
     <div class="also">
       <p><strong>Also available:</strong> {footwear.lede}</p>
-      <a class="btn btn--small btn--dark" href={enquiryHref('Leather footwear')}>Ask about footwear</a>
+      <a class="btn btn--small btn--dark" href={enquiryHref('Leather footwear')} data-enquiry="Leather footwear">Ask about footwear</a>
     </div>
   </section>
 </Base>

@@ -10,11 +10,11 @@ import { url } from '../../lib/paths';
       <p class="eyebrow">Get in touch</p>
       <h2 id="contact-title">Ready to trade? Tell us what you need.</h2>
       <p class="lead">
-        Send the product, quantity, packing and destination port. Your email app opens with an enquiry template ready to
-        fill in.
+        Send the product, quantity, packing and destination port. The message comes pre-filled, ready to send from
+        Gmail, Outlook or your email app.
       </p>
       <div class="btn-row">
-        <a class="btn btn--dark" href={enquiryHref()}>Email an enquiry <span class="btn__arrow" aria-hidden="true">→</span></a>
+        <a class="btn btn--dark" href={enquiryHref()} data-enquiry="">Send an enquiry <span class="btn__arrow" aria-hidden="true">→</span></a>
         <a class="btn btn--ghost" href={url('/products/')}>Browse products</a>
       </div>
     </div>

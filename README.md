@@ -17,7 +17,7 @@ A redesign of [geoexcel.group](https://www.geoexcel.group/) for Geo Excel, a Ben
 
 **Problem:** a new buyer visiting the current site can't quickly tell what Geo Excel sells, why to trust it, or how to start trading. The headline is generic, the registrations are hidden in image sliders, and the only way to get in touch is a four-field contact form.
 
-**Solution:** the homepage walks through a buyer's questions in order: who Geo Excel is, what it sells and where it comes from, why choose it, how to trade, proof of registration, sustainability, and contact. Every product has an Enquire button that opens the buyer's email app with a short template, so the first message already has what's needed for a quote.
+**Solution:** the homepage walks through a buyer's questions in order: who Geo Excel is, what it sells and where it comes from, why choose it, how to trade, proof of registration, sustainability, and contact. Every product has an Enquire button that lets the buyer send a pre-filled enquiry from Gmail, Outlook or their own email app, so the first message already has what's needed for a quote.
 
 The full reasoning is in the [problem and solution note](docs/problem-and-solution.md).
 
@@ -28,7 +28,7 @@ The full reasoning is in the [problem and solution note](docs/problem-and-soluti
 - TypeScript for data and the small client-side scripts (mobile menu, product filter, fade-in)
 - `astro:assets` for responsive AVIF/WebP images
 - Self-hosted fonts via Fontsource: Bayon, Manrope, Big Shoulders Stencil
-- No backend, database, tracking or cookies. Enquiries are `mailto:` links.
+- No backend, database, tracking or cookies. Enquiries open a small dialog with Gmail, Outlook and email-app links (`src/components/EnquiryDialog.astro`).
 
 ## Setup
 
@@ -90,7 +90,7 @@ scripts/                     build check, image prep
 
 ## Known limitations
 
-- **Enquiries use email links.** There's no form backend, so the Enquire buttons open the visitor's own mail app. Anyone without a mail app set up has to use the email address or phone number shown on the page. A real launch would want a proper form, e.g. a serverless function plus transactional email.
+- **Enquiries are sent from the visitor's own email.** There's no form backend, so the Enquire dialog opens Gmail, Outlook or the visitor's email app with the message pre-filled, or lets them copy the address and message. Geo Excel can't see an enquiry until the buyer actually sends it, and can't track how many people start one. A real launch would want a proper form, e.g. a serverless function plus transactional email.
 - **Content is taken from the current site.** Product details, photos, the logo and the certificates all come from geoexcel.group. Photos should be swapped for Geo Excel's own originals, and their permission to reuse the certificate images hasn't been checked.
 - **Some product specs are deliberately missing.** Where the current site gives two different values for the same spec, I left it out rather than guess. HS codes are shown at the 4/6-digit international level only.
 - **Two certificates aren't shown.** The FSSAI licence and Council for Leather Exports copies on the current site have expired, so they're hidden until current copies are available.
